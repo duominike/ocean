@@ -1,0 +1,42 @@
+[
+    {
+        "merged": "/home/joker/AndroidStudioProjects/Ocean/pulltorefresh/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/pull_to_refresh_load.png",
+        "source": "/home/joker/AndroidStudioProjects/Ocean/pulltorefresh/build/intermediates/bundles/debug/res/drawable-xhdpi-v4/pull_to_refresh_load.png"
+    },
+    {
+        "merged": "/home/joker/AndroidStudioProjects/Ocean/pulltorefresh/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/ic_pulltorefresh_arrow.png",
+        "source": "/home/joker/AndroidStudioProjects/Ocean/pulltorefresh/build/intermediates/bundles/debug/res/drawable-xhdpi-v4/ic_pulltorefresh_arrow.png"
+    },
+    {
+        "merged": "/home/liwenle/IdeaProjects/vvlive/pulltorefresh/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/pull_to_refresh_load.png",
+        "source": "/home/liwenle/IdeaProjects/vvlive/pulltorefresh/build/intermediates/bundles/debug/res/drawable-xhdpi-v4/pull_to_refresh_load.png"
+    },
+    {
+        "merged": "/home/liwenle/IdeaProjects/vvlive/pulltorefresh/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/default_ptr_rotate.png",
+        "source": "/home/liwenle/IdeaProjects/vvlive/pulltorefresh/build/intermediates/bundles/debug/res/drawable-xhdpi-v4/default_ptr_rotate.png"
+    },
+    {
+        "merged": "/home/joker/AndroidStudioProjects/Ocean/pulltorefresh/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/indicator_arrow.png",
+        "source": "/home/joker/AndroidStudioProjects/Ocean/pulltorefresh/build/intermediates/bundles/debug/res/drawable-xhdpi-v4/indicator_arrow.png"
+    },
+    {
+        "merged": "/home/joker/AndroidStudioProjects/Ocean/pulltorefresh/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/default_ptr_rotate.png",
+        "source": "/home/joker/AndroidStudioProjects/Ocean/pulltorefresh/build/intermediates/bundles/debug/res/drawable-xhdpi-v4/default_ptr_rotate.png"
+    },
+    {
+        "merged": "/home/liwenle/IdeaProjects/vvlive/pulltorefresh/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/ic_pulltorefresh_arrow.png",
+        "source": "/home/liwenle/IdeaProjects/vvlive/pulltorefresh/build/intermediates/bundles/debug/res/drawable-xhdpi-v4/ic_pulltorefresh_arrow.png"
+    },
+    {
+        "merged": "/home/joker/AndroidStudioProjects/Ocean/pulltorefresh/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/refresh_whirl_head.png",
+        "source": "/home/joker/AndroidStudioProjects/Ocean/pulltorefresh/build/intermediates/bundles/debug/res/drawable-xhdpi-v4/refresh_whirl_head.png"
+    },
+    {
+        "merged": "/home/liwenle/IdeaProjects/vvlive/pulltorefresh/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/indicator_arrow.png",
+        "source": "/home/liwenle/IdeaProjects/vvlive/pulltorefresh/build/intermediates/bundles/debug/res/drawable-xhdpi-v4/indicator_arrow.png"
+    },
+    {
+        "merged": "/home/liwenle/IdeaProjects/vvlive/pulltorefresh/build/intermediates/res/merged/androidTest/debug/drawable-xhdpi-v4/refresh_whirl_head.png",
+        "source": "/home/liwenle/IdeaProjects/vvlive/pulltorefresh/build/intermediates/bundles/debug/res/drawable-xhdpi-v4/refresh_whirl_head.png"
+    }
+]

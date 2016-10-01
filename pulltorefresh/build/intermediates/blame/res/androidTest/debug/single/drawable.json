@@ -1,0 +1,18 @@
+[
+    {
+        "merged": "/home/joker/AndroidStudioProjects/Ocean/pulltorefresh/build/intermediates/res/merged/androidTest/debug/drawable/indicator_bg_top.xml",
+        "source": "/home/joker/AndroidStudioProjects/Ocean/pulltorefresh/build/intermediates/bundles/debug/res/drawable/indicator_bg_top.xml"
+    },
+    {
+        "merged": "/home/liwenle/IdeaProjects/vvlive/pulltorefresh/build/intermediates/res/merged/androidTest/debug/drawable/indicator_bg_top.xml",
+        "source": "/home/liwenle/IdeaProjects/vvlive/pulltorefresh/build/intermediates/bundles/debug/res/drawable/indicator_bg_top.xml"
+    },
+    {
+        "merged": "/home/liwenle/IdeaProjects/vvlive/pulltorefresh/build/intermediates/res/merged/androidTest/debug/drawable/indicator_bg_bottom.xml",
+        "source": "/home/liwenle/IdeaProjects/vvlive/pulltorefresh/build/intermediates/bundles/debug/res/drawable/indicator_bg_bottom.xml"
+    },
+    {
+        "merged": "/home/joker/AndroidStudioProjects/Ocean/pulltorefresh/build/intermediates/res/merged/androidTest/debug/drawable/indicator_bg_bottom.xml",
+        "source": "/home/joker/AndroidStudioProjects/Ocean/pulltorefresh/build/intermediates/bundles/debug/res/drawable/indicator_bg_bottom.xml"
+    }
+]
