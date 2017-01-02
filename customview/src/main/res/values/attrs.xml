@@ -6,12 +6,21 @@
         <attr name="android:requiresFadingEdge" />
         <attr name="android:fadingEdgeLength" />
     </declare-styleable>
-    <declare-styleable name="VerticalSeekBar">
+    <declare-styleable name="ThirdVerticalSeekBar">
         <attr name="seekBarRotation">
             <!-- Clock wise - 90 deg; top = min, bottom = max -->
             <enum name="CW90" value="90" />
             <!-- Clock wise - 270 deg; bottom = min, top = max -->
             <enum name="CW270" value="270" />
         </attr>
+    </declare-styleable>
+
+    <declare-styleable name="VerticalSeekBar">
+        <attr name="max" format="integer"></attr>
+        <attr name="progress" format="integer"></attr>
+        <attr name="backgroundColor" format="color"></attr>
+        <attr name="progressColor" format="color"></attr>
+        <attr name="seekBarWidth" format="dimension"></attr>
+        <attr name="thumbDrawable" format="reference"></attr>
     </declare-styleable>
 </resources>
