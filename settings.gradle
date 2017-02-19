@@ -1,1 +1,1 @@
-include ':app', ':pulltorefresh', ':customview'
+include ':app', ':pulltorefresh', ':customview', ':pacific'
