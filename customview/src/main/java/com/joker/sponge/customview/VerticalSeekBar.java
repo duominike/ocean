@@ -1,9 +1,3 @@
-/*
- *  Copyright (C) 2016 joker
- *  自定义垂直的seekbar
- *
- */
-/*============================================================================*/
 package com.joker.sponge.customview;
 
 import android.content.Context;
@@ -46,7 +40,11 @@ public class VerticalSeekBar extends View {
     private int mTotalWidth;
     private int mTotalHeight;
     // progress pos
+    private long mActionDownTime = 0;
+    private long mActionUpTime = 0;
+    private float mActionDownPos;
     private float mCurrentProgressPos;
+    private static final int INERTIALSCROLLTIME = 150;
     private int mProgresStartPos;
     private int mProgresEndPos;
     // draw params
@@ -55,6 +53,7 @@ public class VerticalSeekBar extends View {
 
     private boolean mIsDraging;
     private VerticalSeekBar.OnVerticalSeekbarChangeListener m_listener;
+
     public VerticalSeekBar(Context context) {
         this(context, null);
     }
@@ -90,7 +89,7 @@ public class VerticalSeekBar extends View {
             mThumbHeight = mThumbDrawable.getIntrinsicHeight();
         }
 
-        if(typedArray.hasValue(R.styleable.VerticalSeekBar_seekBarWidth)){
+        if (typedArray.hasValue(R.styleable.VerticalSeekBar_seekBarWidth)) {
             mBgWidth = typedArray.getDimensionPixelSize(R.styleable.VerticalSeekBar_seekBarWidth, 8);
         }
 
@@ -112,13 +111,11 @@ public class VerticalSeekBar extends View {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int width = MeasureSpec.getSize(widthMeasureSpec);
-        if (width < mThumbWidth) {
-            width = mThumbWidth;
-            int height = MeasureSpec.getSize(heightMeasureSpec);
-            setMeasuredDimension(width, height);
-            return;
-        }
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        int height = MeasureSpec.getSize(heightMeasureSpec);
+        height = height + mThumbHeight;
+        width = width + 2 * mThumbWidth;
+        setMeasuredDimension(width, height);
+        return;
     }
 
     private void drawBackground(Canvas canvas) {
@@ -165,7 +162,7 @@ public class VerticalSeekBar extends View {
 
     private void startTracking() {
         mIsDraging = true;
-        if(m_listener != null){
+        if (m_listener != null) {
             m_listener.onStartTrackingTouch(this);
         }
         invalidate();
@@ -173,7 +170,7 @@ public class VerticalSeekBar extends View {
 
     private void stopTracking() {
         mIsDraging = false;
-        if(m_listener != null){
+        if (m_listener != null) {
             m_listener.onStopTrackingTouch(this);
         }
         invalidate();
@@ -181,11 +178,14 @@ public class VerticalSeekBar extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (event.getAction() == MotionEvent.ACTION_OUTSIDE || event.getAction() == MotionEvent.ACTION_CANCEL) {
+        if (!isEnabled()) {
             return false;
         }
-        switch (event.getAction()){
+        switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
+                mActionDownPos = event.getY();
+                mActionDownTime = System.currentTimeMillis();
+                setPressed(true);
                 startTracking();
                 break;
             case MotionEvent.ACTION_MOVE:
@@ -194,10 +194,48 @@ public class VerticalSeekBar extends View {
                 changeProgressFromUser();
                 break;
             case MotionEvent.ACTION_UP:
-                stopTracking();
+                if (mIsDraging) {
+                    stopTracking();
+                    setPressed(false);
+                } else {
+                    startTracking();
+                    changeProgressFromUser();
+                    stopTracking();
+                }
+                break;
+            case MotionEvent.ACTION_CANCEL:
+                mActionUpTime = System.currentTimeMillis();
+                if (mIsDraging) {
+                    stopTracking();
+                    setPressed(false);
+                }
+                dealInertiaScroll();
+                invalidate();
                 break;
         }
         return true;
+    }
+
+    private void dealInertiaScroll() {
+        long timeDiff = mActionUpTime - mActionDownTime;
+        float v = 0;
+        if (timeDiff > 0 && (Math.abs(mCurrentProgressPos - mActionDownPos) > 0)) {
+            v = (Math.abs(mActionDownPos - mCurrentProgressPos)) / timeDiff;
+        }
+        if (mActionDownPos > mCurrentProgressPos) {
+            startTracking();
+            mCurrentProgressPos = mCurrentProgressPos - v * INERTIALSCROLLTIME;
+            prosessOutSide();
+            changeProgressFromUser();
+            stopTracking();
+        }
+        if (mCurrentProgressPos > mActionDownPos) {
+            startTracking();
+            mCurrentProgressPos = mCurrentProgressPos + v * INERTIALSCROLLTIME;
+            prosessOutSide();
+            changeProgressFromUser();
+            stopTracking();
+        }
     }
 
     public void setMax(int max) {
@@ -206,19 +244,21 @@ public class VerticalSeekBar extends View {
 
     /**
      * set current progress
+     *
      * @param progress
      */
     public void setProgress(int progress) {
         this.mProgress = progress;
         mCurrentProgressPos = getProgressPos();
         invalidate();
-        if(m_listener != null){
+        if (m_listener != null) {
             m_listener.onProgressChanged(this, mProgress, false);
         }
     }
 
     /**
      * get current progress
+     *
      * @return
      */
     public int getProgress() {
@@ -269,26 +309,27 @@ public class VerticalSeekBar extends View {
      */
     private float getProgressPos() {
         float everyProgressPx = Math.abs(mProgresEndPos - mProgresStartPos) / mMax;
-        return mThumbHeight / 2 + (mMax - mProgress) * everyProgressPx;
+        float result = mThumbHeight / 2 + (mMax - mProgress) * everyProgressPx;
+        return result;
     }
 
     /**
      * change progress by user seek current pos
      */
-    private void changeProgressFromUser(){
-        if(mCurrentProgressPos >= mProgresStartPos){
+    private void changeProgressFromUser() {
+        if (mCurrentProgressPos >= mProgresStartPos) {
             mProgress = 0;
-        }else if(mCurrentProgressPos <= mProgresEndPos){
+        } else if (mCurrentProgressPos <= mProgresEndPos) {
             mProgress = mMax;
         }
-        mProgress = (int)(Math.abs((mProgresStartPos - mCurrentProgressPos)/ (mProgresStartPos - mProgresEndPos)) * mMax);
-        if(m_listener != null){
+        mProgress = (int) (Math.abs((mProgresStartPos - mCurrentProgressPos) / (mProgresStartPos - mProgresEndPos)) * mMax);
+        if (m_listener != null) {
             m_listener.onProgressChanged(this, mProgress, mIsDraging);
         }
         invalidate();
     }
 
-    public void setOnVerticalSeekbarChangeListener(OnVerticalSeekbarChangeListener l){
+    public void setOnVerticalSeekbarChangeListener(OnVerticalSeekbarChangeListener l) {
         this.m_listener = l;
     }
 

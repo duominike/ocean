@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/Ocean.iml" filepath="$PROJECT_DIR$/Ocean.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/customview/customview.iml" filepath="$PROJECT_DIR$/customview/customview.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ocean_dev.iml" filepath="$PROJECT_DIR$/ocean_dev.iml" />
       <module fileurl="file://$PROJECT_DIR$/pulltorefresh/pulltorefresh.iml" filepath="$PROJECT_DIR$/pulltorefresh/pulltorefresh.iml" />
     </modules>
   </component>
