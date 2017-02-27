@@ -120,6 +120,7 @@ public class CommentListView  extends LinearLayout{
         LinearLayout.LayoutParams tvCharacterNameParams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT,
                 LayoutParams.WRAP_CONTENT);
         tvCharacterName.setTextColor(m_nCharacterNameColor);
+        // 代码中设置文字大小要用这个
         tvCharacterName.getPaint().setTextSize(m_nTextSize);
         tvCharacterName.setLayoutParams(tvCharacterNameParams);
         if(TextUtils.isEmpty(commmentInfo.getParentCommenterName())){
@@ -131,9 +132,9 @@ public class CommentListView  extends LinearLayout{
             String name = String.format(mstrReplyFormat, charactName,
                     parentName);
             SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(name);
-            spannableStringBuilder.setSpan(new ForegroundColorSpan(getContext().getResources().getColor(R.color.gray_285c95)), 1, parentName.length(),
+            spannableStringBuilder.setSpan(new ForegroundColorSpan(m_nCharacterNameColor), 1, parentName.length(),
                     Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            spannableStringBuilder.setSpan(new ForegroundColorSpan(getContext().getResources().getColor(R.color.gray_285c95)), name.length() - parentName.length(), name.length(),
+            spannableStringBuilder.setSpan(new ForegroundColorSpan(m_nCharacterNameColor), name.length() - parentName.length(), name.length(),
                     Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             tvCharacterName.setText(spannableStringBuilder);
         }
