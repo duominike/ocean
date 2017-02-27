@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="comment_default_size">11sp</dimen>
+    <dimen name="comment_default_dis_to_content">9dp</dimen>
+    <dimen name="comment_default_lineSpace">12dp</dimen>
+</resources>

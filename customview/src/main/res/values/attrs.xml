@@ -23,4 +23,14 @@
         <attr name="seekBarWidth" format="dimension"></attr>
         <attr name="thumbDrawable" format="reference"></attr>
     </declare-styleable>
+    <declare-styleable name="CommentListView">
+        <attr name="character_color" format="color" /> // 评论人颜色
+        <attr name="contentColor" format="color" /> // 内容颜色
+        <attr name="contentTextSize" format="dimension" />// 字体大小
+        <attr name="disToContent" format="dimension" />// 人名距离内容的间距
+        <attr name="hide_list_Hint" format="string"></attr>//剩余评论条数格式
+        <attr name="reply_format" format="string"></attr>// 回复格式
+        <attr name="default_show_line_number" format="integer"></attr>// 默认显示行号
+        <attr name="lineSpace" format="dimension"></attr>// 行间距
+    </declare-styleable>
 </resources>

@@ -45,6 +45,9 @@
         <activity android:name=".testview.TestJsbridgeActivity"
             android:screenOrientation="portrait">
         </activity>
+        <activity android:name=".testview.TextCommentListActivity"
+                  android:screenOrientation="portrait">
+        </activity>
     </application>
 
 </manifest>
