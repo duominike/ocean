@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.joker.ocean.base.BaseActivity;
+<<<<<<< 0b228df180d1ca4566419a06446a01e095c5da63
 <<<<<<< 9c5943ecc200aa900d49f319cb54e8450b2bd3c0
 import com.joker.ocean.testview.TestJsbridgeActivity;
 import com.joker.ocean.testview.TestVerticalSeekbarActiivty;
