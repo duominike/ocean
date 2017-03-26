@@ -6,8 +6,6 @@ package com.joker.ocean.tvdemo.view;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-<<<<<<< 1fb46aed4d44e2dbed4041facfcbb3a79b735fc3
-<<<<<<< 0b228df180d1ca4566419a06446a01e095c5da63
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +22,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.joker.ocean.R;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+
 import com.joker.ocean.tvdemo.model.DemoModle;
 
 import java.util.List;
