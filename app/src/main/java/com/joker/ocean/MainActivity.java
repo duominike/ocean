@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.joker.ocean.base.BaseActivity;
-import com.joker.ocean.testview.TestVerticalSeekbarActiivty;
+import com.joker.ocean.tvdemo.TVDemoActivity;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener{
     private TextView m_tvTestView;
@@ -31,7 +31,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         Intent intent;
         switch (view.getId()){
             case R.id.tv_customview:
-                intent = new Intent(MainActivity.this, TestVerticalSeekbarActiivty.class);
+                intent = new Intent(MainActivity.this, TVDemoActivity.class);
                 startActivity(intent);
                 break;
         }
