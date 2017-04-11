@@ -5,7 +5,7 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-    <com.lyk.focusview_master.FocusView
+    <com.joker.ocean.tvdemo.view.FocusView
         android:id="@+id/focus_ui"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
