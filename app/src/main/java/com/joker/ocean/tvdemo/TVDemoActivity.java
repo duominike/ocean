@@ -1,5 +1,7 @@
-package com.joker.ocean.tvdemo; 
+package com.joker.ocean.tvdemo;
 import android.graphics.Color;
+package com.joker.ocean.tvdemo;
+
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
