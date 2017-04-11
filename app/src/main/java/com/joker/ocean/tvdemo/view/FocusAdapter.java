@@ -6,7 +6,6 @@ package com.joker.ocean.tvdemo.view;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-<<<<<<< fa62ffa9043ffdcf60376c21737e22719aaf6cf1
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,7 +69,6 @@ public class FocusAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-		LayoutInflater mInflater = LayoutInflater.from(mContext);
 		LayoutInflater mInflater = LayoutInflater.from(mContext);
 		View view  = mInflater.inflate(
 				R.layout.layout_focus_item,parent);
