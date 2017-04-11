@@ -25,7 +25,10 @@ import com.joker.ocean.R;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.joker.ocean.R;
 import com.joker.ocean.tvdemo.model.DemoModle;
 
 import java.util.List;
