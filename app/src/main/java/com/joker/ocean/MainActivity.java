@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.joker.ocean.base.BaseActivity;
-import com.joker.ocean.testview.TestVerticalSeekbarActiivty;
 import com.joker.ocean.tvdemo.TVDemoActivity;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener{
