@@ -20,19 +20,20 @@ public class UIMonitorPrinter implements Printer{
             startTime = System.currentTimeMillis();
             mLogPrinterListener.onStartLoop();
         }else{
+            long endTime = System.currentTimeMillis();
             long time = System.currentTimeMillis() - startTime;
-            executeTime(s, time);
+            executeTime(startTime, endTime, s, time);
             startTime = 0;
         }
     }
 
-    private void executeTime(String s, long time){
+    private void executeTime(long startTime, long endTime, String s, long time){
         int level = 0;
         if(time > UiPerfMonitorConfig.TIME_WARNING_LEVEL_2){
             level = UiPerfMonitorConfig.TIME_WARNING_LEVEL_2;
         }else if(time > UiPerfMonitorConfig.TIME_WARNING_LEVEL_1){
             level = UiPerfMonitorConfig.TIME_WARNING_LEVEL_1;
         }
-        mLogPrinterListener.onEndLoop(s, level);
+        mLogPrinterListener.onEndLoop(startTime, endTime, s, level);
     }
 }
