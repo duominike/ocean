@@ -23,4 +23,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.0.0'
     compile project(":customview")
     compile project(":pulltorefresh")
+    compile project(path: ':pacific')
 }
