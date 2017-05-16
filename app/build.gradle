@@ -13,8 +13,13 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            buildConfigField "Boolean", "DEBUG_MODE", "false"
+            minifyEnabled true
+            zipAlignEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug{
+            buildConfigField "Boolean", "DEBUG_MODE", "true"
         }
     }
 }
@@ -23,5 +28,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.0.0'
     compile project(":customview")
     compile project(":pulltorefresh")
-    compile project(path: ':pacific')
+    compile project(":pacific")
 }

@@ -1,6 +1,7 @@
 package com.joker.ocean.tvdemo;
-
 import android.graphics.Color;
+package com.joker.ocean.tvdemo;
+
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -35,7 +36,7 @@ public class TVDemoActivity extends BaseActivity implements FocusView.OnItemClic
         setContentView(R.layout.mian_tv_ui);
         FocusView view = (FocusView) findViewById(R.id.focus_ui);
         view.setOnItemClickListener(this);
-        view.setBackgroundColor(Color.BLACK);
+        view.setBackgroundColor(getResources().getColor(R.color.theme_color));
         view.setGap(5);
         view.setVisibleItems(6, 5);
         view.setOrientation(FocusView.OrientationType.Horizontal);

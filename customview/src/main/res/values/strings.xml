@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">customview</string>
+    <string name="expand_left_comments">展开所有%d条评论></string>
+    <string name="reply_comment_format" formatted="false">%s&#160;回复&#160;%s:</string>
 </resources>
