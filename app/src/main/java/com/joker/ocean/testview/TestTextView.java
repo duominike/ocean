@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
-import com.joker.ocean.log.Logger;
+import com.joker.pacific.log.Logger;
 
 /**
  * Created by joker on 17-5-12.
@@ -27,7 +27,7 @@ public class TestTextView extends android.support.v7.widget.AppCompatTextView{
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        mLogger.i("onTouchEvent: " + event.getAction());
+        mLogger.info("onTouchEvent: " + event.getAction());
 //        if(event.getAction() == MotionEvent.ACTION_DOWN){
 //            return false;
 //        }

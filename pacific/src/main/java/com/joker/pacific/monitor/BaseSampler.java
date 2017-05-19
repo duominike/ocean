@@ -3,7 +3,7 @@ package com.joker.pacific.monitor;
 import android.os.Handler;
 import android.os.HandlerThread;
 
-import com.joker.pacific.logger.Logger;
+import com.joker.pacific.log.Logger;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 

@@ -1,6 +1,6 @@
 package com.joker.pacific.monitor;
 
-import com.joker.pacific.logger.Logger;
+import com.joker.pacific.log.Logger;
 import com.joker.pacific.module.CpuInfo;
 
 import java.io.BufferedReader;

@@ -5,7 +5,8 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.widget.RelativeLayout;
 
-import com.joker.ocean.log.Logger;
+import com.joker.pacific.log.Logger;
+
 
 /**
  * Created by joker on 17-5-12.
@@ -28,19 +29,19 @@ public class TestRelativeLayout extends RelativeLayout{
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-        mLogger.i("dispatchTouchEvent: --->> " + ev.getAction());
+        mLogger.info("dispatchTouchEvent: --->> " + ev.getAction());
         return super.dispatchTouchEvent(ev);
     }
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
-        mLogger.i("onInterceptTouchEvent: --->> " + ev.getAction());
+        mLogger.info("onInterceptTouchEvent: --->> " + ev.getAction());
         return super.onInterceptTouchEvent(ev);
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        mLogger.i("onTouchEvent: --->> " + event.getAction());
+        mLogger.info("onTouchEvent: --->> " + event.getAction());
         return super.onTouchEvent(event);
     }
 }
