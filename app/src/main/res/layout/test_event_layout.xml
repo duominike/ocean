@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+<com.joker.ocean.testview.testui.TestRelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+        <com.joker.ocean.testview.testui.TestLinearLayout
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:background="@color/black">
+                <com.joker.ocean.testview.testui.TestTextView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:text="test"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:background="@color/blue_edge"/>
+        </com.joker.ocean.testview.testui.TestLinearLayout>
+
+</com.joker.ocean.testview.testui.TestRelativeLayout>
+</LinearLayout>

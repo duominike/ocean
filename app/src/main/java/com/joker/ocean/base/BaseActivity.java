@@ -2,7 +2,7 @@ package com.joker.ocean.base;
 
 import android.support.v4.app.FragmentActivity;
 
-import com.joker.pacific.logger.Logger;
+import com.joker.pacific.log.Logger;
 
 
 /**

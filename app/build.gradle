@@ -26,7 +26,13 @@ android {
 
 dependencies {
     compile 'com.android.support:appcompat-v7:25.0.0'
+    compile 'com.facebook.fresco:fresco:0.14.1'
+    // 0.13.0 --> 0.14.1
+    compile 'com.facebook.fresco:imagepipeline-okhttp:0.14.1'
+    compile 'com.facebook.fresco:webpsupport:0.14.1'
     compile project(":customview")
     compile project(":pulltorefresh")
     compile project(":pacific")
+    compile 'io.reactivex:rxjava:1.2.1'
+    compile 'io.reactivex:rxandroid:1.2.1'
 }
