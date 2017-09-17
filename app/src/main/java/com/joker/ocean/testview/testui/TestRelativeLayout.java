@@ -1,28 +1,28 @@
-package com.joker.ocean.testview;
+package com.joker.ocean.testview.testui;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.joker.pacific.log.Logger;
+
 
 /**
  * Created by joker on 17-5-12.
  */
 
-public class TestLinearLayout extends LinearLayout{
-    private Logger mLogger = Logger.getLogger(TestLinearLayout.class);
-    public TestLinearLayout(Context context) {
+public class TestRelativeLayout extends RelativeLayout{
+    private Logger mLogger = Logger.getLogger(TestRelativeLayout.class);
+    public TestRelativeLayout(Context context) {
         super(context);
     }
 
-    public TestLinearLayout(Context context, @Nullable AttributeSet attrs) {
+    public TestRelativeLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public TestLinearLayout(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public TestRelativeLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
@@ -36,7 +36,7 @@ public class TestLinearLayout extends LinearLayout{
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         mLogger.info("onInterceptTouchEvent: --->> " + ev.getAction());
-        return true;
+        return super.onInterceptTouchEvent(ev);
     }
 
     @Override

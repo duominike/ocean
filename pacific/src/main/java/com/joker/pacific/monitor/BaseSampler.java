@@ -50,6 +50,7 @@ public abstract class BaseSampler {
         @Override
         public void run() {
             if(mIsSampling.get()){
+                doSample();
                 getControlHandler().postDelayed(mRunnable, intervalTime);
             }
         }
