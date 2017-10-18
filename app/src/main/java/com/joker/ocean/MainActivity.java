@@ -30,24 +30,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
-//        mRxJavaMapOperation.testmap();
-//        mRxJavaMapOperation.testFlatMapIterable();
-//        mRxJavaMapOperation.testFlatMapIterable();
-        mRxJavaMapOperation.testScan();
-        mRxJavaMapOperation.testGroupBy();
-        mRxJavaMapOperation.testBuffer();
-        mRxJavaMapOperation.testCast();
-        mRxJavaMapOperation.testWindow();
+
+
     }
 
-    private void testFilterBase() {
-        mRxJavaFilterOperation.testFilter();
-        mRxJavaFilterOperation.testTake();
-        mRxJavaFilterOperation.testTakeLast();
-        mRxJavaFilterOperation.testDistinct();
-        mRxJavaFilterOperation.testDistinctUntilsChanged();
-        mRxJavaFilterOperation.testSkip();
-        mRxJavaFilterOperation.testElementAt();
-    }
 
 }

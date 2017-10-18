@@ -5,9 +5,12 @@ import com.joker.pacific.log.Logger;
 import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
+import rx.Observer;
 import rx.Subscriber;
+import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.functions.Func2;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by joker on 17-9-27.
@@ -77,37 +80,40 @@ public class RxJavaCombination {
 
                     @Override
                     public void onNext(Object o) {
-                        mLogger.info("testMerge onNext: " + o);
+                        mLogger.info("testZip onNext: " + o);
                     }
                 });
     }
 
+    private int i = 1;
+    private int j = 0 ;
+    private String content = "abcdefghijklmnopqrstuvwxyz";
     public void testJoin() {
-       Observable<Integer> observable1 = Observable.interval(200, TimeUnit.MILLISECONDS)
-               .map(new Func1<Long, Integer>() {
-                   @Override
-                   public Integer call(Long aLong) {
-                       return Integer.valueOf((int)(aLong % 100));
-                   }
-               });
-        Observable<String> observable2 = Observable.interval(100, TimeUnit.MILLISECONDS)
-                .map(new Func1<Long, String>() {
-                    @Override
-                    public String call(Long aLong) {
-                        return String.valueOf(aLong %100);
-                    }
-                });
-
-        Observable<String> observable = observable1.join(observable2,
-                integer -> Observable.timer(300, TimeUnit.MILLISECONDS),
-                str -> Observable.timer(150, TimeUnit.MILLISECONDS),
-                new Func2<Integer, String, String>() {
+        mLogger.info("testJoin");
+        Observable<Integer> observable1 = Observable.interval(3000, TimeUnit.MILLISECONDS).map(new Func1<Long, Integer>() {
             @Override
-            public String call(Integer integer, String s) {
-                return integer+ s;
+            public Integer call(Long aLong) {
+                mLogger.info("testJoin call integer");
+                return Integer.valueOf(i++);
             }
         });
-        observable.subscribe(new Subscriber<String>() {
+
+        Observable<String> observable2 = Observable.interval(1500, TimeUnit.MILLISECONDS).map(new Func1<Long, String>() {
+            @Override
+            public String call(Long aLong) {
+                mLogger.info("testJoin call string");
+                return content.substring(j, ++j);
+            }
+        });
+
+        observable1.join(observable2, integer -> Observable.timer(2, TimeUnit.SECONDS),
+                str -> Observable.timer(1, TimeUnit.SECONDS),
+                new Func2<Integer, String, String>() {
+                    @Override
+                    public String call(Integer integer, String s) {
+                        return integer + s;
+                    }
+                }).subscribe(new Observer<String>() {
             @Override
             public void onCompleted() {
 
@@ -120,45 +126,38 @@ public class RxJavaCombination {
 
             @Override
             public void onNext(String s) {
-                mLogger.info("testJoin onNext: " +s);
+                mLogger.info("testJoin onNext: " + s);
             }
         });
     }
 
-    public void testConbineLatest() {
-        Observable<Integer> observable1 = Observable.interval(200, TimeUnit.MILLISECONDS)
-                .map(new Func1<Long, Integer>() {
-                    @Override
-                    public Integer call(Long aLong) {
-                        return Integer.valueOf((int)(aLong % 100));
+
+    private Observable<String> createJoinObserver() {
+        return Observable.create(new Observable.OnSubscribe<String>() {
+            @Override
+            public void call(Subscriber<? super String> subscriber) {
+                for (int i = 1; i < 5; i++) {
+                    subscriber.onNext("Right-" + i);
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
-                });
-        Observable<String> observable2 = Observable.interval(100, TimeUnit.MILLISECONDS)
-                .map(new Func1<Long, String>() {
-                    @Override
-                    public String call(Long aLong) {
-                        return String.valueOf(aLong %100);
-                    }
-                });
-        Observable.combineLatest(observable1, observable2, new Func2<Integer, String, String>() {
-            @Override
-            public String call(Integer integer, String s) {
-                return integer+ s;
+                }
             }
-        }).subscribe(new Subscriber<String>() {
+        }).subscribeOn(Schedulers.newThread());
+    }
+
+    public void join() {
+        mLogger.info("join");
+        Observable.just("Left-").join(createJoinObserver(),
+                integer -> Observable.timer(3000, TimeUnit.MILLISECONDS),
+                integer -> Observable.timer(2000, TimeUnit.MILLISECONDS),
+                (i, j) -> i + j
+        ).subscribe(new Action1<String>() {
             @Override
-            public void onCompleted() {
-
-            }
-
-            @Override
-            public void onError(Throwable e) {
-
-            }
-
-            @Override
-            public void onNext(String o) {
-                mLogger.info("testCombineLatest onNext: " + o);
+            public void call(String s) {
+                mLogger.info("join:" + s + "\n");
             }
         });
     }
