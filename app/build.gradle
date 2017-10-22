@@ -10,6 +10,10 @@ android {
         targetSdkVersion 24
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true;
+        jackOptions {
+            enabled true
+        }
     }
     buildTypes {
         release {
@@ -22,6 +26,10 @@ android {
             buildConfigField "Boolean", "DEBUG_MODE", "true"
         }
     }
+    compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
+    }
 }
 
 dependencies {
@@ -30,6 +38,7 @@ dependencies {
     // 0.13.0 --> 0.14.1
     compile 'com.facebook.fresco:imagepipeline-okhttp:0.14.1'
     compile 'com.facebook.fresco:webpsupport:0.14.1'
+    compile 'com.android.support:multidex:1.0.1'
     compile project(":customview")
     compile project(":pulltorefresh")
     compile project(":pacific")
