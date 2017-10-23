@@ -42,6 +42,6 @@ dependencies {
     compile project(":customview")
     compile project(":pulltorefresh")
     compile project(":pacific")
-    compile 'io.reactivex:rxjava:1.2.1'
-    compile 'io.reactivex:rxandroid:1.2.1'
+    compile 'io.reactivex.rxjava2:rxjava:2.1.5'
+    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
 }
