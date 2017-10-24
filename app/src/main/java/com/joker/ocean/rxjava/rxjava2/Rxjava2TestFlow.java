@@ -36,12 +36,13 @@ public class Rxjava2TestFlow {
 
     }
 
+
     //在此策略下，如果放入Flowable的异步缓存池中的数据超限了，则会抛出MissingBackpressureException异常。
-    public void testFlowableError() {
+    public void testError() {
         Flowable.create(new FlowableOnSubscribe<Object>() {
             @Override
             public void subscribe(@NonNull FlowableEmitter<Object> e) throws Exception {
-                for(int i =0; i<= 129; i++){
+                for (int i = 1; i <= 129; i++) {
                     e.onNext(i);
                 }
                 e.onComplete();
@@ -58,9 +59,9 @@ public class Rxjava2TestFlow {
                     @Override
                     public void onNext(Object o) {
                         mLogger.info("onNext");
-                        try{
+                        try {
                             Thread.sleep(10000);
-                        }catch (InterruptedException e){
+                        } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
                     }
@@ -81,21 +82,21 @@ public class Rxjava2TestFlow {
     /**
      * 在此策略下，如果Flowable的异步缓存池满了，会丢掉将要放入缓存池中的数据。
      */
-    public void testFlowableDrop() {
+    public void testDrop() {
         Flowable.create(new FlowableOnSubscribe<Object>() {
             @Override
             public void subscribe(@NonNull FlowableEmitter<Object> e) throws Exception {
-                mLogger.info("testFlowableDrop begin fire data");
-                for(int i =0; i<= 500; i++){
-                    mLogger.info("testFlowableDrop fire: "+ i);
+                mLogger.info("testDrop begin fire data");
+                for (int i = 1; i <= 500; i++) {
+                    mLogger.info("testDrop fire: " + i);
                     e.onNext(i);
-                    try{
+                    try {
                         Thread.sleep(100);
-                    }catch (InterruptedException E){
+                    } catch (InterruptedException E) {
 
                     }
                 }
-                mLogger.info("testFlowableDrop end fire data");
+                mLogger.info("testDrop end fire data");
                 e.onComplete();
             }
         }, BackpressureStrategy.DROP).subscribeOn(Schedulers.newThread())
@@ -103,18 +104,18 @@ public class Rxjava2TestFlow {
                 .subscribe(new Subscriber<Object>() {
                     @Override
                     public void onSubscribe(Subscription s) {
-                        mLogger.info("testFlowableDrop onSubscribe");
+                        mLogger.info("testDrop onSubscribe");
                         s.request(Long.MAX_VALUE);
                     }
 
                     @Override
                     public void onNext(Object o) {
-                        try{
+                        try {
                             Thread.sleep(300);
-                        }catch (InterruptedException e){
+                        } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
-                        mLogger.info("testFlowableDrop onNext: " + o);
+                        mLogger.info("testDrop onNext: " + o);
                     }
 
                     @Override
@@ -124,7 +125,7 @@ public class Rxjava2TestFlow {
 
                     @Override
                     public void onComplete() {
-                        mLogger.info("onComplete");
+                        mLogger.info("testDrop onComplete");
                     }
                 });
     }
@@ -133,17 +134,17 @@ public class Rxjava2TestFlow {
      * 与Drop策略一样，如果缓存池满了，会丢掉将要放入缓存池中的数据，
      * 不同的是，不管缓存池的状态如何，LATEST都会将最后一条数据强行放入缓存池中
      */
-    public void testFlowableLatest() {
+    public void testLatest() {
         Flowable.create(new FlowableOnSubscribe<Object>() {
             @Override
             public void subscribe(@NonNull FlowableEmitter<Object> e) throws Exception {
                 mLogger.info("testFlowableDrop begin fire data");
-                for(int i =0; i<= 500; i++){
-                    mLogger.info("testFlowableDrop fire: "+ i);
+                for (int i = 0; i <= 500; i++) {
+                    mLogger.info("testFlowableDrop fire: " + i);
                     e.onNext(i);
-                    try{
+                    try {
                         Thread.sleep(100);
-                    }catch (InterruptedException E){
+                    } catch (InterruptedException E) {
 
                     }
                 }
@@ -161,9 +162,9 @@ public class Rxjava2TestFlow {
 
                     @Override
                     public void onNext(Object o) {
-                        try{
+                        try {
                             Thread.sleep(300);
-                        }catch (InterruptedException e){
+                        } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
                         mLogger.info("testFlowableDrop onNext: " + o);
@@ -190,7 +191,7 @@ public class Rxjava2TestFlow {
             @Override
             public void subscribe(@NonNull FlowableEmitter<Object> e) throws Exception {
                 int i = 0;
-                while (true){
+                while (true) {
                     e.onNext(i++);
                 }
 //                e.onComplete();
@@ -206,9 +207,9 @@ public class Rxjava2TestFlow {
 
                     @Override
                     public void onNext(Object o) {
-                        try{
+                        try {
                             Thread.sleep(5000);
-                        }catch (InterruptedException e){
+                        } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
                         mLogger.info("testFlowableDrop onNext: " + o);
@@ -229,21 +230,25 @@ public class Rxjava2TestFlow {
 
     /**
      * 我们发现Flowable照常发送数据，而Subsriber不再接收数据。
-     这是因为Flowable在设计的时候，采用了一种新的思路——响应式拉取方式，来设置下游对数据的请求数量，上游可以根据下游的需求量，按需发送数据。
-     如果不显示调用request则默认下游的需求量为零，所以运行上面的代码后，上游Flowable发射的数据不会交给下游Subscriber处理。
-
+     * 这是因为Flowable在设计的时候，采用了一种新的思路——响应式拉取方式，来设置下游对数据的请求数量，上游可以根据下游的需求量，按需发送数据。
+     * 如果不显示调用request则默认下游的需求量为零，所以运行上面的代码后，上游Flowable发射的数据不会交给下游Subscriber处理。
      */
-    public void testFlowableNoneRequest(){
+    public void testFlowableNoneRequest() {
         Flowable.create(new FlowableOnSubscribe<Object>() {
             @Override
             public void subscribe(@NonNull FlowableEmitter<Object> e) throws Exception {
-                mLogger.info("testFlowableNoneRequest subscribe 1");
-                e.onNext(1);
-                mLogger.info("testFlowableNoneRequest subscribe 2");
-                e.onNext(2);
-                mLogger.info("testFlowableNoneRequest subscribe 3");
-                e.onNext(3);
+//                mLogger.info("testFlowableNoneRequest subscribe 1");
+//                e.onNext(1);
+//                mLogger.info("testFlowableNoneRequest subscribe 2");
+//                e.onNext(2);
+//                mLogger.info("testFlowableNoneRequest subscribe 3");
+//                e.onNext(3);
+//                mLogger.info("testFlowableNoneRequest onFinished");
 //                e.onComplete();
+                for(int i=1; i<= 10; i++){
+                    mLogger.info("testFlowableNoneRequest fire:  " + i);
+                    e.onNext(i);
+                }
             }
         }, BackpressureStrategy.BUFFER).subscribeOn(Schedulers.newThread())
                 .observeOn(Schedulers.newThread())
@@ -252,8 +257,8 @@ public class Rxjava2TestFlow {
                     public void onSubscribe(Subscription s) {
 //                        s.request(Long.MAX_VALUE);
 //                        s.request(2);
-//                        s.request(3);
-//                        s.request(4);
+                        s.request(3);
+                        s.request(4);
                     }
 
                     @Override
@@ -273,11 +278,12 @@ public class Rxjava2TestFlow {
                 });
     }
 
-    public void testFlowableData(){
+    public void testFlowableData() {
         Flowable.create(new FlowableOnSubscribe<Object>() {
             @Override
             public void subscribe(@NonNull FlowableEmitter<Object> e) throws Exception {
-                for(int i =1; i<130; i++){
+                for (int i = 1; i < 130; i++) {
+                    mLogger.info("fire data: " + i);
                     e.onNext(i);
                 }
 //                e.onComplete();
@@ -310,31 +316,73 @@ public class Rxjava2TestFlow {
 
     /**
      * 其实不论下游通过s.request();设置多少请求量，我们在上游获取到的初始未完成请求数量都是128。
-     这是为啥呢？
-     还记得之前我们说过，Flowable有一个异步缓存池，上游发射的数据，先放到异步缓存池中，再由异步缓存池交给下游。
-     所以上游在发射数据时，首先需要考虑的不是下游的数据请求量，而是缓存池中能不能放得下，否则在缓存池满的情况下依然会导致数据遗失或者背压异常。
-     如果缓存池可以放得下，那就发送，至于是否超出了下游的数据需求量，可以在缓存池向下游传递数据时，再作判断，
-     如果未超出，则将缓存池中的数据传递给下游，如果超出了，则不传递。
-     如果下游对数据的需求量超过缓存池的大小，而上游能获取到的最大需求量是128，上游对超出128的需求量是怎么获取到的呢？
-
+     * 这是为啥呢？
+     * 还记得之前我们说过，Flowable有一个异步缓存池，上游发射的数据，先放到异步缓存池中，再由异步缓存池交给下游。
+     * 所以上游在发射数据时，首先需要考虑的不是下游的数据请求量，而是缓存池中能不能放得下，否则在缓存池满的情况下依然会导致数据遗失或者背压异常。
+     * 如果缓存池可以放得下，那就发送，至于是否超出了下游的数据需求量，可以在缓存池向下游传递数据时，再作判断，
+     * 如果未超出，则将缓存池中的数据传递给下游，如果超出了，则不传递。
+     * 如果下游对数据的需求量超过缓存池的大小，而上游能获取到的最大需求量是128，上游对超出128的需求量是怎么获取到的呢？
      */
-    public void testFlowableRequested(){
+
+    public void testFlowableReqOut(){
         Flowable.create(new FlowableOnSubscribe<Object>() {
             @Override
             public void subscribe(@NonNull FlowableEmitter<Object> e) throws Exception {
-                for(int i =1; i<=5; i++){
-                    mLogger.info("testFlowableRequested unFinished Count: "+ e.requested());
-                    mLogger.info("testFlowableRequested fire Data: " + i);
+                for (int i = 1; i <= 5; i++) {
+                    mLogger.info("testFlowableReqOut unFinished Count: " + e.requested());
+                    mLogger.info("testFlowableReqOut fire Data: " + i);
                     e.onNext(i);
                 }
-//                e.onComplete();
+                mLogger.info("testFlowableReqOut fire data end");
+                e.onComplete();
             }
-        }, BackpressureStrategy.ERROR).subscribeOn(Schedulers.newThread())
+        }, BackpressureStrategy.BUFFER)
+                .subscribeOn(Schedulers.newThread())
                 .observeOn(Schedulers.newThread())
                 .subscribe(new Subscriber<Object>() {
                     @Override
                     public void onSubscribe(Subscription s) {
-                        s.request(3);
+                        s.request(150);
+                    }
+
+                    @Override
+                    public void onNext(Object o) {
+                        mLogger.info("testFlowableReqOut onNext: " + o);
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        t.printStackTrace();
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        mLogger.info("testFlowableReqOut onComplete");
+                    }
+                });
+    }
+
+    /**
+     * 如果下游对数据的需求量超过缓存池的大小，而上游能获取到的最大需求量是128，上游对超出128的需求量是怎么获取到的呢？
+     */
+    public void testFlowableRequested() {
+        Flowable.create(new FlowableOnSubscribe<Object>() {
+            @Override
+            public void subscribe(@NonNull FlowableEmitter<Object> e) throws Exception {
+                for (int i = 1; i <= 150; i++) {
+                    mLogger.info("testFlowableRequested unFinished Count: " + e.requested());
+                    mLogger.info("testFlowableRequested fire Data: " + i);
+                    e.onNext(i);
+                }
+                e.onComplete();
+            }
+        }, BackpressureStrategy.BUFFER)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(Schedulers.newThread())
+                .subscribe(new Subscriber<Object>() {
+                    @Override
+                    public void onSubscribe(Subscription s) {
+                        s.request(150);
                     }
 
                     @Override
@@ -350,6 +398,56 @@ public class Rxjava2TestFlow {
                     @Override
                     public void onComplete() {
                         mLogger.info("onComplete");
+                    }
+                });
+    }
+
+
+    private Subscription subscription;
+
+    public void testFlowWithOutMiss() {
+        Flowable.create(new FlowableOnSubscribe<Object>() {
+            @Override
+            public void subscribe(@NonNull FlowableEmitter<Object> e) throws Exception {
+                int i = 0;
+                while (true) {
+                    if (e.requested() == 0) {
+                        continue;
+                    }
+                    mLogger.info("testFlowWithOutMiss send: " + (++i));
+                    e.onNext(i);
+                }
+            }
+        }, BackpressureStrategy.ERROR)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(Schedulers.newThread())
+                .subscribe(new Subscriber<Object>() {
+                    @Override
+                    public void onSubscribe(Subscription s) {
+                        subscription = s;
+                        s.request(1);
+                    }
+
+                    @Override
+                    public void onNext(Object o) {
+                        try {
+                            Thread.sleep(50);
+                            mLogger.info("testFlowWithOutMiss rcv: " + o);
+                            subscription.request(1);
+                        } catch (InterruptedException E) {
+
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        t.printStackTrace();
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        mLogger.info("testFlowWithOutMiss onComplete");
                     }
                 });
     }

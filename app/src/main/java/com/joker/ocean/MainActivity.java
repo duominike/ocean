@@ -37,7 +37,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
-        mRxjava2TestFlow.testFlowableDrop();
+//        mRxjava2TestFlow.testError();
+//        mRxjava2TestFlow.testDrop();
+        mRxjava2TestFlow.testLatest();
     }
 
 
