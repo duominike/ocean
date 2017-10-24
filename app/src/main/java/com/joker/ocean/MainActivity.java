@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.joker.ocean.base.BaseActivity;
+import com.joker.ocean.rxjava.RxJavaUtils;
 import com.joker.ocean.rxjava.rxjava2.Rxjava2Combination;
 import com.joker.ocean.rxjava.rxjava2.Rxjava2FilterOperation;
 import com.joker.ocean.rxjava.rxjava2.Rxjava2Test;
@@ -21,6 +22,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     private RxjavaMapOperation mRxjavaMapOperation;
     private Rxjava2Combination mRxjava2Combination;
     private Rxjava2TestFlow mRxjava2TestFlow;
+    private RxJavaUtils mRxJavaUtils = new RxJavaUtils();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,7 +41,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     public void onClick(View v) {
 //        mRxjava2TestFlow.testError();
 //        mRxjava2TestFlow.testDrop();
-        mRxjava2TestFlow.testLatest();
+//        mRxjava2TestFlow.testLatest();
+//        mRxJavaUtils.demoReqDenpend();
+//        mRxJavaUtils.testConditionReq();
+        mRxJavaUtils.testSameTimeNotify();
+//        mRxJavaUtils.testSeriReqDepend();
     }
 
 

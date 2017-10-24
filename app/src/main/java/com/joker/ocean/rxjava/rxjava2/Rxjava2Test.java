@@ -9,10 +9,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Completable;
+import io.reactivex.CompletableEmitter;
+import io.reactivex.CompletableObserver;
+import io.reactivex.CompletableOnSubscribe;
+import io.reactivex.Flowable;
+import io.reactivex.Maybe;
+import io.reactivex.MaybeObserver;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
+import io.reactivex.Single;
+import io.reactivex.SingleObserver;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+import io.reactivex.subscribers.ResourceSubscriber;
 
 /**
  * Created by joker on 17-10-23.
@@ -159,6 +172,101 @@ public class Rxjava2Test {
                 });
     }
 
+    public void singleDemo(){
+        Single.just(5).subscribeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<Integer>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(@NonNull Integer integer) {
+
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+
+                    }
+                });
+    }
+
+    public void maybeDemo(){
+        Maybe.just(10%2 ==0)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new MaybeObserver<Boolean>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(@NonNull Boolean aBoolean) {
+                        if(aBoolean){
+
+                        }else{
+
+                        }
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    public void completeDemo(){
+        Completable.create(new CompletableOnSubscribe() {
+            @Override
+            public void subscribe(@NonNull CompletableEmitter e) throws Exception {
+                Thread.sleep(1000);
+            }
+        }).subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                        mLogger.info("completeDemo -- onSubscribe");
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        mLogger.info("completeDemo -- onComplete");
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        mLogger.info("completeDemo -- onError");
+                    }
+                });
+    }
+
+    public void collectSubscription(){
+        CompositeDisposable compositeDisposable = new CompositeDisposable();
+        compositeDisposable.add(Flowable.range(1, 10).subscribeWith(new ResourceSubscriber(){
+            @Override
+            public void onNext(Object o) {
+
+            }
+
+            @Override
+            public void onError(Throwable t) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        }));
+    }
 
 
 }
