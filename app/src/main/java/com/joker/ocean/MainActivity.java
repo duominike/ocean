@@ -39,18 +39,55 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
-//        mRxjava2TestFlow.testError();
-//        mRxjava2TestFlow.testDrop();
-//        mRxjava2TestFlow.testLatest();
-//        mRxJavaUtils.demoReqDenpend();
-//        mRxJavaUtils.testConditionReq();
-//        mRxJavaUtils.testSameTimeNotify();
-//        mRxJavaUtils.testSeriReqDepend();
-//        mRxjavaMapOperation.testFlatMap();
-//        mRxjavaMapOperation.testConcatMap();
-//        mRxjava2Combination.testMergeAsync();
-//        mRxjava2Combination.testZipAsync();
+
+    }
+
+    private void testFilter(){
+        mFilterOperation.testFilter();
+        mFilterOperation.testDistinct();
+        mFilterOperation.testDistinctUntilsChanged();
+        mFilterOperation.testTimeOut();
+        mFilterOperation.testSmpling();
+        mFilterOperation.testSkip();
+        mFilterOperation.testSkipLast();
+    }
+
+    private void testMap(){
+        mRxjavaMapOperation.testmap();
+        mRxjavaMapOperation.testFlatMap();
+        mRxjavaMapOperation.testConcatMap();
+        mRxjavaMapOperation.testFlatMapIterable();
+        mRxjavaMapOperation.testBuffer();
+        mRxjavaMapOperation.testWindow();
+    }
+
+    public void testCombination(){
+        mRxjava2Combination.testZip();
+        mRxjava2Combination.testMerge();
         mRxjava2Combination.join();
+    }
+
+    private void testFlowable(){
+        mRxjava2TestFlow.testError();
+        mRxjava2TestFlow.testDrop();
+        mRxjava2TestFlow.testLatest();
+        mRxjava2TestFlow.testFlowableBuffer();
+        mRxjava2TestFlow.testFlowWithOutMiss();
+
+    }
+
+    private void testRxjavaUtils(){
+        mRxJavaUtils.testReqOrder();
+        mRxJavaUtils.testSeriReqDepend();
+        mRxJavaUtils.testConditionReq();
+        mRxJavaUtils.testMergeReq();
+    }
+
+    private void testObservable(){
+        mRxjava2Test.testObservableFrom();
+        mRxjava2Test.testObservableRange();
+        mRxjava2Test.testObservableInterval();
+        mRxjava2Test.testObservableTimer();
     }
 
 

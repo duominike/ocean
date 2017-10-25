@@ -36,11 +36,12 @@ public class RxJavaUtils {
     /**
      * 假设一个页面有多个请求，希望请求结果按顺序给出
      */
-    public void demoReqDenpend() {
+    public void testReqOrder() {
         Observable<Object> observable1 = Observable.create(new ObservableOnSubscribe<Object>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<Object> e) throws Exception {
                 Thread.sleep(300);
+                mLogger.info("demoReqDenpend current1 : " + Thread.currentThread().getName());
                 e.onNext("hello");
                 e.onComplete();
             }
@@ -50,6 +51,7 @@ public class RxJavaUtils {
             @Override
             public void subscribe(@NonNull ObservableEmitter<Object> e) throws Exception {
                 Thread.sleep(150);
+                mLogger.info("demoReqDenpend current2 : " + Thread.currentThread().getName());
                 e.onNext("7");
                 e.onComplete();
             }
@@ -182,7 +184,7 @@ public class RxJavaUtils {
     /**
      * 一个页面有多个请求，想等请求的结果都返回的时候再刷新页面, merge不保证顺序，　可用于对于请求结果顺序无要求的情况，
      */
-    public void testSameTimeNotify(){
+    public void testMergeReq(){
         Observable<Object> observable1 = Observable.create(new ObservableOnSubscribe<Object>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<Object> e) throws Exception {
