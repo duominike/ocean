@@ -44,8 +44,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 //        mRxjava2TestFlow.testLatest();
 //        mRxJavaUtils.demoReqDenpend();
 //        mRxJavaUtils.testConditionReq();
-        mRxJavaUtils.testSameTimeNotify();
+//        mRxJavaUtils.testSameTimeNotify();
 //        mRxJavaUtils.testSeriReqDepend();
+//        mRxjavaMapOperation.testFlatMap();
+//        mRxjavaMapOperation.testConcatMap();
+//        mRxjava2Combination.testMergeAsync();
+//        mRxjava2Combination.testZipAsync();
+        mRxjava2Combination.join();
     }
 
 

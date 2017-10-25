@@ -8,6 +8,9 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.ObservableSource;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
@@ -63,44 +66,45 @@ public class RxjavaMapOperation {
      * 式,然后合并这些Observables发射的数据,最后将合并后的结果作为最终的
      * Observable。
      */
+    private String mStr = "abcdefghijklmnopqrstuvwxyz";
+
     public void testFlatMap() {
-        Observable.range(1, 10)
-                .flatMap(new Function<Integer, Observable<List<String>>>() {
+        Observable<Integer> observable1 = Observable.create(new ObservableOnSubscribe<Integer>() {
+            @Override
+            public void subscribe(@NonNull ObservableEmitter<Integer> e) throws Exception {
+                for (int i = 0; i <= 25; i++) {
+                    mLogger.info("testFlatMap　emit int: -->> " + i + "-->> " + Thread.currentThread().getName());
+                    e.onNext(i);
+                    Thread.sleep(100);
+                }
+                e.onComplete();
+            }
+        }).subscribeOn(Schedulers.newThread());
+
+        observable1.flatMap(new Function<Integer, ObservableSource<String>>() {
+            @Override
+            public ObservableSource<String> apply(@NonNull Integer integer) throws Exception {
+                return Observable.create(new ObservableOnSubscribe<String>() {
                     @Override
-                    public Observable<List<String>> apply(Integer integer) {
-                        List<String> lst = new ArrayList<String>();
-                        for (int i = 0; i < integer; i++) {
-                            lst.add(String.valueOf(i) + String.valueOf(integer));
+                    public void subscribe(@NonNull ObservableEmitter<String> e) throws Exception {
+                        mLogger.info("testFlatMap convert: -->> " + integer + "-->> " +
+                                Thread.currentThread().getName());
+                        for (int i = 0; i <= integer; i++) {
+                            mLogger.info("testFlatMap　emit string: -->> " + String.valueOf(mStr.charAt(integer)) + "-->> " +
+                                    Thread.currentThread().getName());
+                            e.onNext(String.valueOf(mStr.charAt(integer)));
+                            Thread.sleep(50);
                         }
-                        return Observable.just(lst);
+                        e.onComplete();
                     }
-                }).
-                subscribe(new Observer<List<String>>() {
+                }).subscribeOn(Schedulers.newThread());
+            }
+        }).subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<String>() {
                     @Override
-                    public void onSubscribe(@NonNull Disposable d) {
-                        mLogger.info("testFlatMap: onSubscribe");
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        mLogger.info("testFlatMap: onComplete");
-                    }
-
-
-                    @Override
-                    public void onError(Throwable e) {
-                        mLogger.info("testFlatMap: onError");
-                    }
-
-                    @Override
-                    public void onNext(List<String> s) {
-                        StringBuilder stringBuilder = new StringBuilder();
-                        for (String ss : s) {
-                            stringBuilder.append(ss);
-                            stringBuilder.append(",");
-                        }
-                        mLogger.info("testFlatMap onNext: " + stringBuilder.toString());
-
+                    public void accept(String s) throws Exception {
+                        mLogger.info("testFlatMap accept: -->> " + s);
                     }
                 });
     }
@@ -109,39 +113,44 @@ public class RxjavaMapOperation {
      * oncatMap()解决了flatMap()的交叉问题，它能够把发射的值连续在一起
      */
     public void testConcatMap() {
-        Observable.range(0, 10)
-                .concatMap(new Function<Integer, Observable<List<String>>>() {
+        Observable<Integer> observable1 = Observable.create(new ObservableOnSubscribe<Integer>() {
+            @Override
+            public void subscribe(@NonNull ObservableEmitter<Integer> e) throws Exception {
+                for (int i = 0; i <= 25; i++) {
+                    mLogger.info("testFlatMap　emit int: -->> " + i + "-->> " + Thread.currentThread().getName());
+                    e.onNext(i);
+                    Thread.sleep(100);
+                }
+                e.onComplete();
+            }
+        }).subscribeOn(Schedulers.newThread());
+
+        observable1.concatMap(new Function<Integer, ObservableSource<String>>() {
+            @Override
+            public ObservableSource<String> apply(@NonNull Integer integer) throws Exception {
+                return Observable.create(new ObservableOnSubscribe<String>() {
                     @Override
-                    public Observable<List<String>> apply(Integer integer) {
-                        List<String> lst = new ArrayList<String>();
-                        for (int i = 0; i < integer; i++) {
-                            lst.add(String.valueOf(i) + String.valueOf(integer));
+                    public void subscribe(@NonNull ObservableEmitter<String> e) throws Exception {
+                        mLogger.info("testConcatMap convert: -->> " + integer + "-->> " +
+                                Thread.currentThread().getName());
+                        for (int i = 0; i <= integer; i++) {
+                            mLogger.info("testConcatMap　emit string: -->> " + String.valueOf(mStr.charAt(integer)) + "-->> " +
+                                    Thread.currentThread().getName());
+                            e.onNext(String.valueOf(mStr.charAt(integer)));
+                            Thread.sleep(50);
                         }
-                        return Observable.just(lst);
+                        e.onComplete();
                     }
-                }).subscribe(new Observer<List<String>>() {
-            @Override
-            public void onSubscribe(@NonNull Disposable d) {
-                mLogger.info("testConcatMap: onSubscribe");
+                }).subscribeOn(Schedulers.io());
             }
-
-            @Override
-            public void onComplete() {
-                mLogger.info("testConcatMap: onComplete");
-            }
-
-
-            @Override
-            public void onError(Throwable e) {
-                mLogger.info("testFlatMap: onError");
-            }
-
-            @Override
-            public void onNext(List<String> s) {
-                mLogger.info("testFlatMap onNext: " + s.toString());
-
-            }
-        });
+        }).subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<String>() {
+                    @Override
+                    public void accept(String s) throws Exception {
+                        mLogger.info("testConcatMap accept: -->> " + s);
+                    }
+                });
     }
 
     /**
@@ -249,34 +258,18 @@ public class RxjavaMapOperation {
         datas.add("three");
         datas.add("five");
         datas.add("seven");
-        Observable observable = Observable.fromIterable(datas).
+        Observable.fromIterable(datas).
                 groupBy(new Function<String, Character>() {
                     @Override
                     public Character apply(String s) {
                         return s.charAt(0);
                     }
-                });
-        Observable.concat(observable).subscribe(new Observer<String>() {
-            @Override
-            public void onSubscribe(@NonNull Disposable d) {
-
-            }
-
-            @Override
-            public void onComplete() {
-
-            }
-
-            @Override
-            public void onError(Throwable e) {
-
-            }
-
-            @Override
-            public void onNext(String o) {
-                mLogger.info("testGroupBy onNext: " + o);
-            }
+                }).subscribe(group -> {
+            group.subscribe(str ->{
+                mLogger.info("testGroupBy key: -->> " + group.getKey() + "value: " + str);
+            });
         });
+
     }
 
 

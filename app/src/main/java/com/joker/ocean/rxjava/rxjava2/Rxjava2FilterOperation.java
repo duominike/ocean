@@ -291,11 +291,14 @@ public class Rxjava2FilterOperation {
     private int i = 0;
     private Random mRandom = new Random();
     public void testDebounce() {
+        i = 0;
         Observable.create(new ObservableOnSubscribe<Integer>() {
             @Override
             public void subscribe(@NonNull ObservableEmitter<Integer> e) throws Exception {
                 while (true){
-                    e.onNext(i++);
+                    mLogger.info("testDebounce fire: " + i);
+                    e.onNext(i);
+                    i++;
                     try{
                         Thread.currentThread().sleep(50 * mRandom.nextInt(4));
                     }catch (InterruptedException exception){

@@ -9,6 +9,7 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.BiFunction;
@@ -52,6 +53,53 @@ public class Rxjava2Combination {
                         mLogger.info("testMerge onNext: " + o);
                     }
                 });
+    }
+
+    public void testMergeAsync() {
+        Observable observable1 = Observable.create(new ObservableOnSubscribe<Object>() {
+            @Override
+            public void subscribe(@NonNull ObservableEmitter<Object> e) throws Exception {
+                for (int i = 1; i <= 5; i++) {
+                    e.onNext(i);
+                    Thread.sleep(50);
+                }
+            }
+        }).subscribeOn(Schedulers.newThread());
+
+        Observable observable2 = Observable.create(new ObservableOnSubscribe<Object>() {
+            @Override
+            public void subscribe(@NonNull ObservableEmitter<Object> e) throws Exception {
+                for (int i = 6; i <= 10; i++) {
+                    e.onNext(i);
+                    Thread.sleep(75);
+                }
+            }
+        }).subscribeOn(Schedulers.newThread());
+
+        Observable.merge(observable1, observable2)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(@NonNull Object o) {
+                        mLogger.info("testMergeAsync onNext: " + o);
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        mLogger.info("onError");
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+
     }
 
     private String zipIntAndStr(Integer int1, String str1) {
@@ -100,55 +148,59 @@ public class Rxjava2Combination {
                 });
     }
 
-//    private int i = 1;
-//    private int j = 0;
-//    private String content = "abcdefghijklmnopqrstuvwxyz";
-//
-//    public void testJoin() {
-//        mLogger.info("testJoin");
-//        Observable<Integer> observable1 = Observable.interval(3000, TimeUnit.MILLISECONDS).
-//                map(new Function<Long, Integer>() {
-//            @Override
-//            public Integer apply(Long aLong) {
-//                mLogger.info("testJoin call integer");
-//                return Integer.valueOf(i++);
-//            }
-//        });
-//
-//        Observable<String> observable2 = Observable.interval(1500, TimeUnit.MILLISECONDS).
-//                map(new Function<Long, String>() {
-//            @Override
-//            public String apply(Long aLong) {
-//                mLogger.info("testJoin call string");
-//                return content.substring(j, ++j);
-//            }
-//        });
-//
-//        observable1.join(observable2, integer -> Observable.timer(2, TimeUnit.SECONDS),
-//                str -> Observable.timer(1, TimeUnit.SECONDS),
-//                new Func<Integer, String, String>() {
-//                    @Override
-//                    public String call(Integer integer, String s) {
-//                        return integer + s;
-//                    }
-//                }).subscribe(new Observer<String>() {
-//            @Override
-//            public void onCompleted() {
-//
-//            }
-//
-//            @Override
-//            public void onError(Throwable e) {
-//
-//            }
-//
-//            @Override
-//            public void onNext(String s) {
-//                mLogger.info("testJoin onNext: " + s);
-//            }
-//        });
-//    }
+    public void testZipAsync() {
+        Observable<Integer> observable1 = Observable.create(new ObservableOnSubscribe<Integer>() {
+            @Override
+            public void subscribe(@NonNull ObservableEmitter<Integer> e) throws Exception {
+                for (int i = 1; i <= 5; i++) {
+                    Thread.sleep(50);
+                    e.onNext(i);
+                }
+                e.onComplete();
+            }
+        }).subscribeOn(Schedulers.newThread());
 
+        Observable<Integer> observable2 = Observable.create(new ObservableOnSubscribe<Integer>() {
+            @Override
+            public void subscribe(@NonNull ObservableEmitter<Integer> e) throws Exception {
+                for (int i = 6; i <= 10; i++) {
+                    Thread.sleep(75);
+                    e.onNext(i);
+                }
+                e.onComplete();
+            }
+        }).subscribeOn(Schedulers.newThread());
+
+        Observable.zip(observable1, observable2, new BiFunction() {
+            @Override
+            public Object apply(@NonNull Object o, @NonNull Object o2) throws Exception {
+                return String.valueOf(o) + String.valueOf(o2);
+            }
+
+        }).subscribeOn(Schedulers.newThread())
+        .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<String>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(@NonNull String o) {
+                        mLogger.info("testMergeAsync onNext: " + o);
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        mLogger.info("onError");
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
 
     private Observable<String> createJoinObserver() {
         return Observable.create(new ObservableOnSubscribe<String>() {
