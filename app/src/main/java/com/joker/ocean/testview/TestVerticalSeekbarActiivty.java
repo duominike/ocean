@@ -23,17 +23,17 @@ public class TestVerticalSeekbarActiivty extends BaseActivity {
         mVerticalSeekbar.setOnVerticalSeekbarChangeListener(new VerticalSeekBar.OnVerticalSeekbarChangeListener(){
             @Override
             public void onProgressChanged(VerticalSeekBar seekBar, int i, boolean b) {
-                logger.info("onProgressChanged:   " + i);
+                mLogger.info("onProgressChanged:   " + i);
             }
 
             @Override
             public void onStartTrackingTouch(VerticalSeekBar seekBar) {
-                logger.info("onStartTrackingTouch");
+                mLogger.info("onStartTrackingTouch");
             }
 
             @Override
             public void onStopTrackingTouch(VerticalSeekBar seekBar) {
-                logger.info("onStopTrackingTouch");
+                mLogger.info("onStopTrackingTouch");
             }
         });
     }
