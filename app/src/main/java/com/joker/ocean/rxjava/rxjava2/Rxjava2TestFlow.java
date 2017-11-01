@@ -42,7 +42,8 @@ public class Rxjava2TestFlow {
         Flowable.create(new FlowableOnSubscribe<Object>() {
             @Override
             public void subscribe(@NonNull FlowableEmitter<Object> e) throws Exception {
-                for (int i = 1; i <= 129; i++) {
+                for (int i = 1; i <= 130; i++) {
+                    mLogger.info("onError: " + e.requested());
                     e.onNext(i);
                 }
                 e.onComplete();
@@ -88,6 +89,7 @@ public class Rxjava2TestFlow {
             public void subscribe(@NonNull FlowableEmitter<Object> e) throws Exception {
                 mLogger.info("testDrop begin fire data");
                 for (int i = 1; i <= 500; i++) {
+                    mLogger.info("testDrop: requested -->> " + e.requested());
                     mLogger.info("testDrop fire: " + i);
                     e.onNext(i);
                     try {
@@ -418,38 +420,27 @@ public class Rxjava2TestFlow {
                     e.onNext(i);
                 }
             }
-        }, BackpressureStrategy.ERROR)
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(Schedulers.newThread())
-                .subscribe(new Subscriber<Object>() {
-                    @Override
-                    public void onSubscribe(Subscription s) {
-                        subscription = s;
-                        s.request(1);
-                    }
+        }, BackpressureStrategy.ERROR).subscribe(new Subscriber<Object>() {
+            @Override
+            public void onSubscribe(Subscription s) {
+                s.request(Long.MAX_VALUE);
+            }
 
-                    @Override
-                    public void onNext(Object o) {
-                        try {
-                            Thread.sleep(50);
-                            mLogger.info("testFlowWithOutMiss rcv: " + o);
-                            subscription.request(1);
-                        } catch (InterruptedException E) {
+            @Override
+            public void onNext(Object o) {
 
-                        }
+            }
 
-                    }
+            @Override
+            public void onError(Throwable t) {
 
-                    @Override
-                    public void onError(Throwable t) {
-                        t.printStackTrace();
-                    }
+            }
 
-                    @Override
-                    public void onComplete() {
-                        mLogger.info("testFlowWithOutMiss onComplete");
-                    }
-                });
+            @Override
+            public void onComplete() {
+
+            }
+        });
     }
 
 

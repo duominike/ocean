@@ -43,6 +43,9 @@
         <activity android:name=".testview.TestVerticalSeekbarActiivty">
 
         </activity>
+        <activity android:name=".testview.TempActivity">
+
+        </activity>
         <activity android:name=".testview.TestJsbridgeActivity"
             android:screenOrientation="portrait">
         </activity>

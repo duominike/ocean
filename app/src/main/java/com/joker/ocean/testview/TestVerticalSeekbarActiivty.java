@@ -1,7 +1,9 @@
 package com.joker.ocean.testview;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.View;
 
 import com.joker.ocean.R;
 import com.joker.ocean.base.BaseActivity;
@@ -16,25 +18,13 @@ public class TestVerticalSeekbarActiivty extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.test_vertical_seekbar_layout);
-        mVerticalSeekbar = (VerticalSeekBar) findViewById(R.id.verticalSeekbar);
-        mVerticalSeekbar.setMax(100);
-        mVerticalSeekbar.setProgress(30);
-        mVerticalSeekbar.setOnVerticalSeekbarChangeListener(new VerticalSeekBar.OnVerticalSeekbarChangeListener(){
+        setContentView(R.layout.activity_main);
+        findViewById(R.id.tv_customview).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onProgressChanged(VerticalSeekBar seekBar, int i, boolean b) {
-                mLogger.info("onProgressChanged:   " + i);
-            }
-
-            @Override
-            public void onStartTrackingTouch(VerticalSeekBar seekBar) {
-                mLogger.info("onStartTrackingTouch");
-            }
-
-            @Override
-            public void onStopTrackingTouch(VerticalSeekBar seekBar) {
-                mLogger.info("onStopTrackingTouch");
+            public void onClick(View v) {
+                startActivity(new Intent(TestVerticalSeekbarActiivty.this, TempActivity.class));
             }
         });
+
     }
 }

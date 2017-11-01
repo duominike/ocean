@@ -47,6 +47,12 @@ public class BaseFragmentActivity extends FragmentActivity implements Transactio
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        mLogger.info("onStop");
+    }
+
+    @Override
     public boolean isCommitterResumed() {
         return mIsResumed;
     }
