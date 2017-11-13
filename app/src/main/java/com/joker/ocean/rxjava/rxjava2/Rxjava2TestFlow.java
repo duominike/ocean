@@ -12,6 +12,7 @@ import io.reactivex.Flowable;
 import io.reactivex.FlowableEmitter;
 import io.reactivex.FlowableOnSubscribe;
 import io.reactivex.Observable;
+import io.reactivex.Scheduler;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
@@ -48,7 +49,7 @@ public class Rxjava2TestFlow {
                 }
                 e.onComplete();
             }
-        }, BackpressureStrategy.ERROR).subscribeOn(Schedulers.newThread())
+        }, BackpressureStrategy.ERROR).subscribeOn(Schedulers.trampoline())
                 .observeOn(Schedulers.newThread())
                 .subscribe(new Subscriber<Object>() {
                     @Override
@@ -441,6 +442,28 @@ public class Rxjava2TestFlow {
 
             }
         });
+    }
+
+
+    public void testTranspoline(){
+        Scheduler.Worker worker = Schedulers.trampoline().createWorker();
+        Runnable leafAction = () -> System.out.println("----leafAction.");
+        Runnable innerAction = () ->
+        {
+            System.out.println("--innerAction start.");
+            worker.schedule(leafAction);
+            System.out.println("--innerAction end.");
+        };
+
+
+        Runnable outerAction = () ->
+        {
+            System.out.println("outer start.");
+            worker.schedule(innerAction);
+            System.out.println("outer end.");
+        };
+
+        worker.schedule(outerAction);
     }
 
 

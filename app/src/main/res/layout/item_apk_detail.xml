@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:fresco="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="60dp">
+    <com.joker.ocean.selfview.OceanDraweeView
+        android:id="@+id/ocean_icon"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        fresco:roundAsCircle="false"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="15dp"
+        fresco:actualImageScaleType="centerCrop"/>
+    <TextView
+        android:id="@+id/tv_app_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/ocean_icon"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="10dp"
+        android:textSize="14sp"
+        android:textColor="@color/black"/>
+
+    <TextView
+        android:id="@+id/tv_app_pkg_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/ocean_icon"
+        android:layout_below="@+id/tv_app_name"
+        android:layout_marginTop="5dp"
+        android:textSize="14sp"
+        android:textColor="@color/black"/>
+
+</RelativeLayout>
