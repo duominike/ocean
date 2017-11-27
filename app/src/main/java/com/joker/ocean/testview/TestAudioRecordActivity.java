@@ -15,8 +15,10 @@ import com.joker.multimedia.wav.WavFileWriter;
 import com.joker.ocean.R;
 import com.joker.pacific.component.BaseFragmentActivity;
 
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -24,7 +26,7 @@ import java.io.IOException;
  * Created by joker on 17-11-27.
  */
 
-public class TestAudioRecordActivity extends BaseFragmentActivity implements View.OnClickListener{
+public class TestAudioRecordActivity extends BaseFragmentActivity implements View.OnClickListener {
     private TextView txtBeginRecord;
     private TextView txtStopRecord;
     private TextView txtBeginPlay;
@@ -43,53 +45,26 @@ public class TestAudioRecordActivity extends BaseFragmentActivity implements Vie
     private volatile boolean isPlaying;
     private DataOutputStream dataAfterEncoded;
     private DataOutputStream dataBeforeEncoded;
+    private DataInputStream dataInput;
     private AudioCapturer.OnAudioFrameCapturedListener mOnAudioFrameCapturedListener = new AudioCapturer.OnAudioFrameCapturedListener() {
         @Override
         public void onAudioFrameCaptured(byte[] audioData) {
-            try{
+            try {
                 dataBeforeEncoded.write(audioData, 0, audioData.length);
-            }catch (IOException e){
+            } catch (IOException e) {
                 e.printStackTrace();
             }
-            mAudioEncoder.encode(audioData, System.nanoTime()/ 1000L);
+            mAudioEncoder.encode(audioData, System.nanoTime() / 1000L);
         }
     };
-
-    private byte[] adtsHeader = null;
-    private int m_iAacObjectType;
-    private int m_iSampleIndex;
-    private int m_iChannels;
 
     private AudioEncoder.OnAudioEncodedListener mEncodedListener = new AudioEncoder.OnAudioEncodedListener() {
         @Override
         public void onFrameEncoded(byte[] encoded, long presentationTimeUs) {
-            try{
-                if(adtsHeader == null){
-                    adtsHeader = new byte[7];
-                    m_iAacObjectType = encoded[0]>> 3;
-                    m_iSampleIndex = ((encoded[0] & 0x07) << 1) + (encoded[1] >> 7);
-                    m_iChannels = (encoded[1] & 0x78) >> 3;
-                    return;
-                }
-
-                int profile = m_iAacObjectType;  //AAC LC
-                //39=MediaCodecInfo.CodecProfileLevel.AACObjectELD;
-                int freqIdx = m_iSampleIndex;  //44.1KHz
-                int chanCfg = m_iChannels;  //CPE
-                int length = encoded.length;
-
-                // fill in ADTS data
-                adtsHeader[0] = (byte) 0xFF;
-                adtsHeader[1] = (byte) 0xF9;
-                adtsHeader[2] = (byte) (((profile - 1) << 6) + (freqIdx << 2) + (chanCfg >> 2));
-                adtsHeader[3] = (byte) (((chanCfg & 3) << 6) + (length >> 11));
-                adtsHeader[4] = (byte) ((length & 0x7FF) >> 3);
-                adtsHeader[5] = (byte) (((length & 7) << 5) + 0x1F);
-                adtsHeader[6] = (byte) 0xFC;
-
-                dataAfterEncoded.write(adtsHeader, 0, 7);
+            try {
                 dataAfterEncoded.write(encoded, 0, encoded.length);
-            }catch (IOException e){
+//                mWavFileWriter.writeData(encoded, 0, encoded.length);
+            } catch (IOException e) {
                 e.printStackTrace();
             }
 
@@ -111,15 +86,15 @@ public class TestAudioRecordActivity extends BaseFragmentActivity implements Vie
         initView();
         setUp();
         File file = new File(Environment.getExternalStorageDirectory() + OUTPUTDIR);
-        if(!file.exists()){
+        if (!file.exists()) {
             file.mkdirs();
         }
-
-        try{
-            dataAfterEncoded = new DataOutputStream(new FileOutputStream(Environment.getExternalStorageDirectory() +  OUTPUTDIR + outPutFileEncoded));
+        try {
+            dataAfterEncoded = new DataOutputStream(new FileOutputStream(Environment.getExternalStorageDirectory() + OUTPUTDIR + outPutFileEncoded));
             dataBeforeEncoded = new DataOutputStream(new FileOutputStream(Environment.getExternalStorageDirectory() + OUTPUTDIR + outPutFileUnEncoded));
-        }catch (IOException e){
 
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
     }
@@ -140,7 +115,7 @@ public class TestAudioRecordActivity extends BaseFragmentActivity implements Vie
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.tv_begin_record:
                 beginRecord();
                 break;
@@ -159,7 +134,7 @@ public class TestAudioRecordActivity extends BaseFragmentActivity implements Vie
     private Runnable enCodeRunnable = new Runnable() {
         @Override
         public void run() {
-            while (isRecording){
+            while (isRecording) {
                 mAudioEncoder.retrieve();
             }
             mAudioEncoder.close();
@@ -169,24 +144,25 @@ public class TestAudioRecordActivity extends BaseFragmentActivity implements Vie
     private Runnable deCodeRunnable = new Runnable() {
         @Override
         public void run() {
-            while (isPlaying){
+            while (isPlaying) {
                 mAudioDecoder.retrieve();
             }
             mAudioDecoder.close();
         }
     };
-    private void beginRecord(){
+
+    private void beginRecord() {
         mLogger.info("beginRecord");
-        if(null == mAudioCapturer){
+        if (null == mAudioCapturer) {
             mAudioCapturer = new AudioCapturer();
             mAudioCapturer.setOnAudioFrameCapturedListener(mOnAudioFrameCapturedListener);
-            mWavFileWriter = new WavFileWriter();
-            try{
-                mWavFileWriter.openFile(Environment.getExternalStorageDirectory() + OUTPUTDIR + "test.wav",
-                        44100, 1, 16);
-            }catch (IOException e){
-
-            }
+//            mWavFileWriter = new WavFileWriter();
+//            try {
+//                mWavFileWriter.openFile(Environment.getExternalStorageDirectory() + OUTPUTDIR + "test.wav",
+//                        44100, 2, 16);
+//            } catch (IOException e) {
+//
+//            }
             mAudioEncoder = new AudioEncoder();
             mAudioEncoder.setAudioEncodedListener(mEncodedListener);
             mAudioEncoder.open();
@@ -196,26 +172,32 @@ public class TestAudioRecordActivity extends BaseFragmentActivity implements Vie
         }
     }
 
-    private void stopRecord(){
+    private void stopRecord() {
         mLogger.info("stopRecord");
         isRecording = false;
         mAudioCapturer.stopCapture();
         mAudioEncoder.close();
-        try{
-            dataBeforeEncoded.close();
+        try {
             dataAfterEncoded.close();
-        }catch (IOException e){
+            dataBeforeEncoded.close();
+//            mWavFileWriter.closeFile();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private void startPlay(){
+    private void startPlay() {
         mLogger.info("startPlay");
         mAudioPlayer = new AudioPlayer();
         mAudioPlayer.startPlayer();
         mAudioDecoder = new AudioDecoder();
         mAudioDecoder.open();
         mAudioDecoder.setAudioDecodedListener(mDecodedListener);
+        try{
+            dataInput = new DataInputStream(new FileInputStream(Environment.getExternalStorageDirectory() + OUTPUTDIR + outPutFileEncoded));
+        }catch (IOException e){
+            e.printStackTrace();
+        }
 //        mWavFileReader = new WavFileReader();
 //        try{
 //            mWavFileReader.openFile(Environment.getExternalStorageDirectory()+OUTPUTDIR+outPutFile);
@@ -229,23 +211,27 @@ public class TestAudioRecordActivity extends BaseFragmentActivity implements Vie
         new Thread(new Runnable() {
             @Override
             public void run() {
-                byte [] data = new byte[1024];
-                while (mWavFileReader.readData(data, 0, 1024) > 0){
-                    mAudioDecoder.decode(data, System.nanoTime() / 1000L);
+                try{
+                    byte[] data = new byte[1024];
+                    while (dataInput.read(data, 0, 1024) > 0) {
+                        mAudioDecoder.decode(data, System.nanoTime() / 1000L);
+                    }
+                }catch (IOException e){
+                    e.printStackTrace();
                 }
 //                stopPlay();
             }
         }).start();
     }
 
-    private void stopPlay(){
+    private void stopPlay() {
         mLogger.info("stopPlay");
         isPlaying = false;
         mAudioPlayer.stopPlayer();
         mAudioDecoder.close();
-        try{
-            mWavFileReader.closeFile();
-        }catch (IOException e){
+        try {
+            dataInput.close();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

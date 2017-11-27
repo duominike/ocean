@@ -105,8 +105,8 @@ public class AudioDecoder {
                     mMediaCodec.queueInputBuffer(inputBufferIndex, 0, input.length, presentationTimeUs, MediaCodec.BUFFER_FLAG_CODEC_CONFIG);
                     mIsFirstFrame = false;
                 } else {
-                    mMediaCodec.queueInputBuffer(inputBufferIndex, 0, input.length, presentationTimeUs, 0);
                 }
+                mMediaCodec.queueInputBuffer(inputBufferIndex, 0, input.length, presentationTimeUs, 0);
             }
         } catch (Throwable t) {
             t.printStackTrace();

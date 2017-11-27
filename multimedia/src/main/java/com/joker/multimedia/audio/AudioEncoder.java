@@ -17,9 +17,9 @@ import java.nio.ByteBuffer;
 public class AudioEncoder {
     private Logger mLogger = Logger.getLogger(AudioEncoder.class);
     private static final String DEFAULT_MIME_TYPE = "audio/mp4a-latm";
-    private static final int DEFAULT_CHANNEL_NUM = 1;
+    private static final int DEFAULT_CHANNEL_NUM = 2;
     private static final int DEFAULT_SAMPLE_RATE = 44100;
-    private static final int DEFAULT_BITRATE = 128 * 1000; //AAC-LC, 64 *1024 for AAC-HE
+    private static final int DEFAULT_BITRATE = 64 * 1000; //AAC-LC, 64 *1024 for AAC-HE
     private static final int DEFAULT_PROFILE_LEVEL = MediaCodecInfo.CodecProfileLevel.AACObjectLC;
     private static final int DEFAULT_MAX_BUFFER_SIZE = 16384;
 
@@ -85,7 +85,7 @@ public class AudioEncoder {
     }
 
     public synchronized boolean encode(byte[] input, long presentationTimeUs) {
-       mLogger.info("encode: " + presentationTimeUs);
+        mLogger.info("encode: " + presentationTimeUs);
         if (!mIsOpened) {
             return false;
         }
@@ -96,7 +96,7 @@ public class AudioEncoder {
             if (inputBufferIndex >= 0) {
                 ByteBuffer inputBuffer = inputBuffers[inputBufferIndex];
                 inputBuffer.clear();
-                inputBuffer.put(input);
+                inputBuffer.put(input, 0, input.length);
                 mMediaCodec.queueInputBuffer(inputBufferIndex, 0, input.length, presentationTimeUs, 0);
             }
         } catch (Throwable t) {
@@ -108,7 +108,7 @@ public class AudioEncoder {
     }
 
     public synchronized boolean retrieve() {
-       mLogger.debug("encode retrieve +");
+        mLogger.debug("encode retrieve +");
         if (!mIsOpened) {
             return false;
         }
@@ -120,13 +120,28 @@ public class AudioEncoder {
             if (outputBufferIndex >= 0) {
                 mLogger.debug("encode retrieve frame  " + bufferInfo.size);
                 ByteBuffer outputBuffer = outputBuffers[outputBufferIndex];
+
                 outputBuffer.position(bufferInfo.offset);
                 outputBuffer.limit(bufferInfo.offset + bufferInfo.size);
-                byte[] frame = new byte[bufferInfo.size];
-                outputBuffer.get(frame, 0, bufferInfo.size);
+
+                int length = bufferInfo.size + 7;
+                byte[] frame = new byte[length];
+                int profile = 2;  //AAC LC
+                int freqIdx = 4;  //44.1KHz
+                int chanCfg = 2;  //CPE
+                frame[0] = (byte) 0xFF;
+                frame[1] = (byte) 0xF9;
+                frame[2] = (byte) (((profile - 1) << 6) + (freqIdx << 2) + (chanCfg >> 2));
+                frame[3] = (byte) (((chanCfg & 3) << 6) + (length >> 11));
+                frame[4] = (byte) ((length & 0x7FF) >> 3);
+                frame[5] = (byte) (((length & 7) << 5) + 0x1F);
+                frame[6] = (byte) 0xFC;
+
+                outputBuffer.get(frame, 7, bufferInfo.size);
                 if (mAudioEncodedListener != null) {
                     mAudioEncodedListener.onFrameEncoded(frame, bufferInfo.presentationTimeUs);
                 }
+                outputBuffer.clear();
                 mMediaCodec.releaseOutputBuffer(outputBufferIndex, false);
             }
         } catch (Throwable t) {
