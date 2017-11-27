@@ -5,25 +5,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-    <!--<com.joker.ocean.selfview.OceanDraweeView-->
-        <!--android:id="@id/tv_customview"-->
-        <!--android:layout_width="150dp"-->
-        <!--android:layout_height="150dp"-->
-        <!--android:layout_centerInParent="true"-->
-        <!--android:gravity="center"-->
-        <!--fresco:actualImageScaleType="centerCrop"-->
-        <!--fresco:roundAsCircle="false"-->
-        <!--fresco:placeholderImage="@drawable/vertical_thumb"-->
-        <!--fresco:placeholderImageScaleType="fitCenter"-->
+    <com.joker.ocean.selfview.OceanDraweeView
+        android:id="@id/tv_customview"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        fresco:actualImageScaleType="centerCrop"
+        fresco:roundAsCircle="false"
+        fresco:placeholderImage="@drawable/vertical_thumb"
+        fresco:placeholderImageScaleType="fitCenter"
 
-    <!--/>-->
-    <ListView
-        android:id="@+id/lv_apks"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:dividerHeight="1dp"
-        android:divider="@color/black">
+    />
+    <!--<ListView-->
+        <!--android:id="@+id/lv_apks"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:dividerHeight="1dp"-->
+        <!--android:divider="@color/black">-->
 
-    </ListView>
+    <!--</ListView>-->
 
 </RelativeLayout>
