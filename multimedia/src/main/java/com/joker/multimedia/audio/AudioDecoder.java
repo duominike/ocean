@@ -16,8 +16,8 @@ import java.nio.ByteBuffer;
 public class AudioDecoder {
     private Logger mLogger = Logger.getLogger(AudioDecoder.class);
     private static final String DEFAULT_MIME_TYPE = "audio/mp4a-latm";
-    private static final int DEFAULT_CHANNEL_NUM = 1;
-    private static final int DEFAULT_SAMPLE_RATE = 22050;
+    private static final int DEFAULT_CHANNEL_NUM = 2;
+    private static final int DEFAULT_SAMPLE_RATE = 44100;
     private static final int DEFAULT_MAX_BUFFER_SIZE = 16384;
 
     private MediaCodec mMediaCodec;
@@ -48,15 +48,23 @@ public class AudioDecoder {
             format.setString(MediaFormat.KEY_MIME, DEFAULT_MIME_TYPE);
             format.setInteger(MediaFormat.KEY_CHANNEL_COUNT, channels);
             format.setInteger(MediaFormat.KEY_SAMPLE_RATE, samplerate);
+            format.setInteger(MediaFormat.KEY_BIT_RATE, 64 * 1000);
             format.setInteger(MediaFormat.KEY_AAC_PROFILE, MediaCodecInfo.CodecProfileLevel.AACObjectLC);
             format.setInteger(MediaFormat.KEY_MAX_INPUT_SIZE, maxBufferSize);
+            format.setInteger(MediaFormat.KEY_IS_ADTS, 1);
+            byte[] data = new byte[]{(byte) 0x11, (byte) 0x90};
+            ByteBuffer csd_0 = ByteBuffer.wrap(data);
+            format.setByteBuffer("csd-0", csd_0);
             mMediaCodec.configure(format, null, null, 0);
-            mMediaCodec.start();
             mIsOpened = true;
         } catch (IOException e) {
             e.printStackTrace();
             return false;
         }
+        if(mMediaCodec == null){
+            return false;
+        }
+        mMediaCodec.start();
         mLogger.info("open audio decoder success !");
         return true;
     }
@@ -94,18 +102,18 @@ public class AudioDecoder {
                 ByteBuffer inputBuffer = inputBuffers[inputBufferIndex];
                 inputBuffer.clear();
                 inputBuffer.put(input);
-                if (mIsFirstFrame) {
-                    /**
-                     * Some formats, notably AAC audio and MPEG4, H.264 and H.265 video formats
-                     * require the actual data to be prefixed by a number of buffers containing
-                     * setup data, or codec specific data. When processing such compressed formats,
-                     * this data must be submitted to the codec after start() and before any frame data.
-                     * Such data must be marked using the flag BUFFER_FLAG_CODEC_CONFIG in a call to queueInputBuffer.
-                     */
-                    mMediaCodec.queueInputBuffer(inputBufferIndex, 0, input.length, presentationTimeUs, MediaCodec.BUFFER_FLAG_CODEC_CONFIG);
-                    mIsFirstFrame = false;
-                } else {
-                }
+//                if (mIsFirstFrame) {
+//                    /**
+//                     * Some formats, notably AAC audio and MPEG4, H.264 and H.265 video formats
+//                     * require the actual data to be prefixed by a number of buffers containing
+//                     * setup data, or codec specific data. When processing such compressed formats,
+//                     * this data must be submitted to the codec after start() and before any frame data.
+//                     * Such data must be marked using the flag BUFFER_FLAG_CODEC_CONFIG in a call to queueInputBuffer.
+//                     */
+//                    mMediaCodec.queueInputBuffer(inputBufferIndex, 0, input.length, presentationTimeUs, MediaCodec.BUFFER_FLAG_CODEC_CONFIG);
+//                    mIsFirstFrame = false;
+//                } else {
+//                }
                 mMediaCodec.queueInputBuffer(inputBufferIndex, 0, input.length, presentationTimeUs, 0);
             }
         } catch (Throwable t) {
@@ -126,7 +134,7 @@ public class AudioDecoder {
             ByteBuffer[] outputBuffers = mMediaCodec.getOutputBuffers();
             MediaCodec.BufferInfo bufferInfo = new MediaCodec.BufferInfo();
             int outputBufferIndex = mMediaCodec.dequeueOutputBuffer(bufferInfo, 1000);
-            if (outputBufferIndex >= 0) {
+            while (outputBufferIndex >= 0) {
                 mLogger.debug("decode retrieve frame " + bufferInfo.size);
                 ByteBuffer outputBuffer = outputBuffers[outputBufferIndex];
                 byte[] outData = new byte[bufferInfo.size];
@@ -135,6 +143,8 @@ public class AudioDecoder {
                     mAudioDecodedListener.onFrameDecoded(outData, bufferInfo.presentationTimeUs);
                 }
                 mMediaCodec.releaseOutputBuffer(outputBufferIndex, false);
+                //解码未解完的数据
+                outputBufferIndex = mMediaCodec.dequeueOutputBuffer(bufferInfo, 0);
             }
         } catch (Throwable t) {
             t.printStackTrace();

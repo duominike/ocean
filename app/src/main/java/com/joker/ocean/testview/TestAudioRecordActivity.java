@@ -10,8 +10,6 @@ import com.joker.multimedia.audio.AudioCapturer;
 import com.joker.multimedia.audio.AudioDecoder;
 import com.joker.multimedia.audio.AudioEncoder;
 import com.joker.multimedia.audio.AudioPlayer;
-import com.joker.multimedia.wav.WavFileReader;
-import com.joker.multimedia.wav.WavFileWriter;
 import com.joker.ocean.R;
 import com.joker.pacific.component.BaseFragmentActivity;
 
@@ -39,8 +37,6 @@ public class TestAudioRecordActivity extends BaseFragmentActivity implements Vie
     private String outPutFileEncoded = "test.aac";
     private String outPutFileUnEncoded = "test.pcm";
     private static final String OUTPUTDIR = "/ocean/record/";
-    private WavFileWriter mWavFileWriter;
-    private WavFileReader mWavFileReader;
     private volatile boolean isRecording;
     private volatile boolean isPlaying;
     private DataOutputStream dataAfterEncoded;
@@ -50,6 +46,7 @@ public class TestAudioRecordActivity extends BaseFragmentActivity implements Vie
         @Override
         public void onAudioFrameCaptured(byte[] audioData) {
             try {
+//                mWavFileWriter.writeData(audioData, 0, audioData.length);
                 dataBeforeEncoded.write(audioData, 0, audioData.length);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -63,7 +60,6 @@ public class TestAudioRecordActivity extends BaseFragmentActivity implements Vie
         public void onFrameEncoded(byte[] encoded, long presentationTimeUs) {
             try {
                 dataAfterEncoded.write(encoded, 0, encoded.length);
-//                mWavFileWriter.writeData(encoded, 0, encoded.length);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -191,8 +187,8 @@ public class TestAudioRecordActivity extends BaseFragmentActivity implements Vie
         mAudioPlayer = new AudioPlayer();
         mAudioPlayer.startPlayer();
         mAudioDecoder = new AudioDecoder();
-        mAudioDecoder.open();
         mAudioDecoder.setAudioDecodedListener(mDecodedListener);
+        mAudioDecoder.open();
         try{
             dataInput = new DataInputStream(new FileInputStream(Environment.getExternalStorageDirectory() + OUTPUTDIR + outPutFileEncoded));
         }catch (IOException e){
