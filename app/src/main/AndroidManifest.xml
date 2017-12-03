@@ -58,6 +58,8 @@
         <activity android:name=".testview.TestAudioRecordActivity">
 
         </activity>
+        <service android:name=".ipc.SubProcessService"
+            android:process=":SubProcess"/>
 
     </application>
 
