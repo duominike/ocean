@@ -4,6 +4,7 @@
 #include "MultiMedia_wrapper.h"
 #include <android/log.h>
 #include "audio/AudioRecord.h"
+#include "audio/CAudioConfigParam.h"
 /*
  * Class:     com_joker_multimedia_JniHelper
  * Method:    nativeStartRecord
@@ -14,12 +15,16 @@ namespace multimedia {
     AudioRecord *gp_record = NULL;
 }
 
+JNIEXPORT void JNICALL Java_com_joker_multimedia_JniHelper_nativeInitRecord
+        (JNIEnv *env, jclass, jobject instance){
+    using namespace multimedia;
+    gp_record = new AudioRecord(new CAudioConfigParam(env, instance));
+}
 
 JNIEXPORT void JNICALL Java_com_joker_multimedia_JniHelper_nativeStartRecord
         (JNIEnv *, jclass) {
     using namespace multimedia;
-    if (NULL == gp_record) {
-        gp_record = new AudioRecord();
+    if (NULL != gp_record) {
         bool initSuccess = gp_record->init();
         if (!initSuccess) {
             __android_log_print(ANDROID_LOG_INFO, TAG, "init Error");

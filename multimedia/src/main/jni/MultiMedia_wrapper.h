@@ -9,6 +9,8 @@ extern "C" {
 #endif
 
 #define TAG "MultiMedia"
+JNIEXPORT void JNICALL Java_com_joker_multimedia_JniHelper_nativeInitRecord
+        (JNIEnv *, jclass, jobject);
 /*
  * Class:     com_joker_multimedia_JniHelper
  * Method:    nativeStartRecord

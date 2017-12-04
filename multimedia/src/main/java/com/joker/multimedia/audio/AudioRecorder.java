@@ -10,6 +10,7 @@ public class AudioRecorder {
     private AudioConfigParam mParam;
     public AudioRecorder(AudioConfigParam param){
         this.mParam = param;
+        JniHelper.nativeInitRecord(mParam);
     }
 
     public void start(){

@@ -8,8 +8,17 @@
 
 #include <pthread.h>
 #include <stdint.h>
+#include "CAudioConfigParam.h"
+#include <SLES/OpenSLES.h>
+#include <SLES/OpenSLES_Android.h>
+
+#define BUFFERCOUNT 2
+#define RECORDBUFFERSIZZE 2048
+static int bufferInddex = 0;
+static uint8_t s_recorderBuffer[BUFFERCOUNT][RECORDBUFFERSIZZE];
 
 namespace multimedia {
+
 
     class IRecord_Callback {
     public:
@@ -22,13 +31,20 @@ namespace multimedia {
         virtual void recordCallback(uint8_t *buffer, int size) = 0;
     };
 
+    static void RecorderCallback(SLAndroidSimpleBufferQueueItf bq, void *context);
+
     class AudioRecord {
     public:
-        AudioRecord();
+        friend void RecorderCallback(SLAndroidSimpleBufferQueueItf bq,
+                                     void *context);
+
+        AudioRecord(CAudioConfigParam *param);
 
         ~AudioRecord();
 
         bool init();
+
+        void prepare();
 
         void release();
 
@@ -46,14 +62,18 @@ namespace multimedia {
 
     private:
         IRecord_Callback *mCallback;
-        pthread_t m_ThreadId;
+        CAudioConfigParam *audioConfigParam;
         volatile bool isInit;
         volatile bool isPause;
         volatile bool isStopped;
-        pthread_mutex_t tasks_mutex = PTHREAD_MUTEX_INITIALIZER;
-        pthread_cond_t tasks_cond = PTHREAD_COND_INITIALIZER;
+        // engine interfaces
+        SLObjectItf openSLEngine;
+        SLEngineItf openSLEngineItf;
 
-        void run();
+        // recorder interfaces
+        SLObjectItf recorderObject;
+        SLRecordItf recorderItf;
+        SLAndroidSimpleBufferQueueItf recorderBufferQueue;
     };
 }
 #endif //OCEAN_DEV_AUDIORECORD_H_H
