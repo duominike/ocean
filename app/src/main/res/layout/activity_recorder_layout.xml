@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp">
+
+        <TextView
+            android:id="@+id/tv_begin_record"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:background="@color/blue_edge"
+            android:padding="5dp"
+            android:text="开始"
+            android:textSize="15sp"/>
+
+        <TextView
+            android:id="@+id/tv_pause_record"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="25dp"
+            android:background="@color/blue_edge"
+            android:padding="5dp"
+            android:text="暂停"
+            android:textSize="15sp"/>
+
+        <TextView
+            android:id="@+id/tv_resume_record"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="25dp"
+            android:background="@color/blue_edge"
+            android:padding="5dp"
+            android:text="恢复"
+            android:textSize="15sp"/>
+
+        <TextView
+            android:id="@+id/tv_stop_record"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="25dp"
+            android:background="@color/blue_edge"
+            android:padding="5dp"
+            android:text="停止"
+            android:textSize="15sp"/>
+
+    </LinearLayout>
+</LinearLayout>

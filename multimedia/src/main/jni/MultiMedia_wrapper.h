@@ -7,6 +7,8 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+#define TAG "MultiMedia"
 /*
  * Class:     com_joker_multimedia_JniHelper
  * Method:    nativeStartRecord

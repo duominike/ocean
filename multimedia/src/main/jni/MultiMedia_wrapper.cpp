@@ -2,16 +2,32 @@
 // Created by joker on 17-12-3.
 //
 #include "MultiMedia_wrapper.h"
-
+#include <android/log.h>
+#include "audio/AudioRecord.h"
 /*
  * Class:     com_joker_multimedia_JniHelper
  * Method:    nativeStartRecord
  * Signature: ()V
  */
-JNIEXPORT void JNICALL Java_com_joker_multimedia_JniHelper_nativeStartRecord
-  (JNIEnv *, jclass){
 
-  }
+namespace multimedia {
+    AudioRecord *gp_record = NULL;
+}
+
+
+JNIEXPORT void JNICALL Java_com_joker_multimedia_JniHelper_nativeStartRecord
+        (JNIEnv *, jclass) {
+    using namespace multimedia;
+    if (NULL == gp_record) {
+        gp_record = new AudioRecord();
+        bool initSuccess = gp_record->init();
+        if (!initSuccess) {
+            __android_log_print(ANDROID_LOG_INFO, TAG, "init Error");
+        }else{
+            gp_record->start();
+        }
+    }
+}
 
 /*
  * Class:     com_joker_multimedia_JniHelper
@@ -19,9 +35,13 @@ JNIEXPORT void JNICALL Java_com_joker_multimedia_JniHelper_nativeStartRecord
  * Signature: ()V
  */
 JNIEXPORT void JNICALL Java_com_joker_multimedia_JniHelper_nativeStopRecord
-  (JNIEnv *, jclass){
-
-  }
+        (JNIEnv *, jclass) {
+    using namespace multimedia;
+    if (NULL != gp_record) {
+        __android_log_print(ANDROID_LOG_INFO, TAG, "stop record");
+        gp_record->stop();
+    }
+}
 
 /*
  * Class:     com_joker_multimedia_JniHelper
@@ -29,9 +49,13 @@ JNIEXPORT void JNICALL Java_com_joker_multimedia_JniHelper_nativeStopRecord
  * Signature: (Z)V
  */
 JNIEXPORT void JNICALL Java_com_joker_multimedia_JniHelper_nativePauseRecord
-  (JNIEnv *, jclass, jboolean){
-
-  }
+        (JNIEnv *, jclass, jboolean pause) {
+    using namespace multimedia;
+    if (NULL != gp_record) {
+        __android_log_print(ANDROID_LOG_INFO, TAG, "pause record");
+        gp_record->pause(pause);
+    }
+}
 
 /*
  * Class:     com_joker_multimedia_JniHelper
@@ -39,6 +63,6 @@ JNIEXPORT void JNICALL Java_com_joker_multimedia_JniHelper_nativePauseRecord
  * Signature: (F)V
  */
 JNIEXPORT void JNICALL Java_com_joker_multimedia_JniHelper_nativeSetRecordVolume
-  (JNIEnv *, jclass, jfloat){
+        (JNIEnv *, jclass, jfloat volume) {
 
-  }
+}

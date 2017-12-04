@@ -14,6 +14,9 @@ android {
         jackOptions {
             enabled true
         }
+        ndk {
+            abiFilters "armeabi-v7a"
+        }
     }
     buildTypes {
         release {
@@ -42,7 +45,8 @@ dependencies {
     compile project(":customview")
     compile project(":pulltorefresh")
     compile project(":pacific")
-    compile project(":multimedia")
+    debugCompile project(path: ':multimedia', configuration: "debug")
+    releaseCompile project(path: ':multimedia', configuration: "release")
     compile 'io.reactivex.rxjava2:rxjava:2.1.5'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3'

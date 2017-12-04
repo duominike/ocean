@@ -22,6 +22,7 @@ public class SubProcessService extends Service {
             log.info("inSendMsgToServer: " + msg.getName() + ": " + msg.getContent());
 
             if(msgCallback != null){
+                log.info("replyToClient");
                 MidData midData = new MidData();
                 midData.setId(1);
                 midData.setName("Joker Server");
@@ -33,8 +34,8 @@ public class SubProcessService extends Service {
 
         @Override
         public void registerMsgCallback(IMsgCallback callback) throws RemoteException {
-            log.info("registerMsgCallback");
-            msgCallback = callback;
+            log.info("registerMsgCallback: " + callback.asBinder());
+            msgCallback = IMsgCallback.Stub.asInterface(callback.asBinder());
         }
 
         @Override
