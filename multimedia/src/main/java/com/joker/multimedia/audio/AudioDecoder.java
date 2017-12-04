@@ -11,6 +11,7 @@ import java.nio.ByteBuffer;
 
 /**
  * Created by joker on 17-11-27.
+ * Android上实际测试 解码并不成功，一般不用硬解
  */
 
 public class AudioDecoder {

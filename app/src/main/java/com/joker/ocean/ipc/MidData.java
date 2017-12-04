@@ -64,4 +64,10 @@ public class MidData implements Parcelable {
     public void setContent(String content) {
         this.content = content;
     }
+
+    public void readFromParcel(Parcel parcel){
+        this.id = parcel.readInt();
+        this.name = parcel.readString();
+        this.content = parcel.readString();
+    }
 }

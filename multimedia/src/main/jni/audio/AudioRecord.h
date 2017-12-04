@@ -17,13 +17,13 @@ public:
     virtual ~ IRecord_Callback(){
     }
     virtual void recordCallback(uint8_t *buffer, int size) = 0;
-}
+};
 
 class AudioRecord {
 public:
     AudioRecord();
     ~AudioRecord();
-    bool init()
+    bool init();
     void release();
     void start();
     void stop();
@@ -41,4 +41,4 @@ private:
     pthread_mutex_t &tasks_mutex;
     pthread_cond_t &tasks_cond;
     void run();
-}
+};

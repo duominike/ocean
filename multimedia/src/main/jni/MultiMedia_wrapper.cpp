@@ -1,7 +1,7 @@
 //
 // Created by joker on 17-12-3.
 //
-#inclue "MultiMedia_wrapper.h"
+#include "MultiMedia_wrapper.h"
 
 /*
  * Class:     com_joker_multimedia_JniHelper

@@ -4,6 +4,8 @@
 #include "AudioRecord.h"
 #include <pthread.h>
 #include <unistd.h>
+#include <android/log.h>
+
 bool AudioRecord::init(){
     isStopped = false;
     pthread_mutex_init(&tasks_mutex, NULL);

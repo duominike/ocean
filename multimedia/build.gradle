@@ -11,12 +11,43 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        ndk{
+            moduleName "multimedia"
+            ldLibs = ["android", "OpenSLES", "log", "GLESv2", "EGL"]//引包
+        }
 
     }
     buildTypes {
         release {
             minifyEnabled false
+            jniDebuggable true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            ndk{
+                abiFilters "armeabi-v7a"
+                stl "stlport_static"//加入stl标准库
+            }
+        }
+
+        debug{
+            jniDebuggable true
+            ndk{
+                abiFilters "armeabi-v7a"
+                stl "stlport_static"//加入stl标准库
+            }
+        }
+    }
+
+    lintOptions {
+        abortOnError false
+        checkReleaseBuilds false
+        disable 'MissingTranslation'
+    }
+
+    sourceSets{
+        main{
+            jni{
+                srcDir "src/main/jni/audio"
+            }
         }
     }
 }

@@ -6,7 +6,7 @@ package com.joker.multimedia;
 
 public class JniHelper {
     static {
-
+        System.loadLibrary("multimedia");
     }
     //录音
     public native static void nativeStartRecord();
