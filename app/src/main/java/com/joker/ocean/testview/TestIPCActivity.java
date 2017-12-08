@@ -28,7 +28,7 @@ public class TestIPCActivity extends BaseFragmentActivity implements View.OnClic
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_test_webview);
         m_tvTestView = (OceanDraweeView) findViewById(R.id.tv_customview);
         m_tvTestView.setOnClickListener(this);
         startBindService();

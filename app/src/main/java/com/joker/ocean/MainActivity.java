@@ -3,26 +3,24 @@ package com.joker.ocean;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.joker.ocean.base.BaseActivity;
-import com.joker.ocean.selfview.OceanDraweeView;
-import com.joker.ocean.testview.TestOpenSLESAudioActivity;
+import com.joker.ocean.webutil.TestTBSWebViewActivity;
 
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
-    private OceanDraweeView m_tvTestView;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        m_tvTestView = (OceanDraweeView) findViewById(R.id.tv_customview);
-        m_tvTestView.setOnClickListener(this);
+        findViewById(R.id.test).setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
-        startActivity(new Intent(this, TestOpenSLESAudioActivity.class));
+        startActivity(new Intent(this, TestTBSWebViewActivity.class));
     }
 }

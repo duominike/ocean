@@ -64,8 +64,13 @@
         <activity android:name=".testview.TestIPCActivity">
 
         </activity>
+
         <activity android:name=".testview.TestOpenSLESAudioActivity"
             android:screenOrientation="portrait">
+
+        </activity>
+        <activity android:name=".webutil.TestTBSWebViewActivity"
+                  android:screenOrientation="portrait">
 
         </activity>
 

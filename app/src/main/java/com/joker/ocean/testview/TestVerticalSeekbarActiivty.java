@@ -18,7 +18,7 @@ public class TestVerticalSeekbarActiivty extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_test_webview);
         findViewById(R.id.tv_customview).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

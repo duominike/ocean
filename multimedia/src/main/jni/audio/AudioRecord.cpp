@@ -219,7 +219,7 @@ namespace multimedia {
 
     void AudioRecord::release() {
         if (getState() != SL_RECORDSTATE_STOPPED) {
-            LOGW("call release, but the state is not SL_PLAYSTATE_STOPPED");
+//            LOGW("call release, but the state is not SL_PLAYSTATE_STOPPED");
             stop();
         }
 
