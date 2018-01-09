@@ -24,6 +24,5 @@ public class TestTBSWebViewActivity extends BaseFragmentActivity{
     @Override
     protected void onResume() {
         super.onResume();
-
     }
 }

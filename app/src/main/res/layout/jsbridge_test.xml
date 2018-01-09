@@ -6,7 +6,7 @@
 
     <!-- button 演示Java调用web -->
     <Button 
-        android:id="@+id/button"
+        android:id= "@id/button"
         android:layout_width="match_parent"
         android:text="@string/button_name"
         android:layout_height="48dp"
@@ -14,7 +14,7 @@
     
     <!-- webview 演示web调用Java -->
     <com.joker.pacific.jsbridge.BridgeWebView
-        android:id="@+id/webView"
+        android:id= "@id/webView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
      </com.joker.pacific.jsbridge.BridgeWebView>

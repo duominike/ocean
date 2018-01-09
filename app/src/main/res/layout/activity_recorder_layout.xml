@@ -12,7 +12,7 @@
         android:paddingRight="15dp">
 
         <TextView
-            android:id="@+id/tv_begin_record"
+            android:id= "@id/tv_begin_record"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -22,7 +22,7 @@
             android:textSize="15sp"/>
 
         <TextView
-            android:id="@+id/tv_pause_record"
+            android:id= "@id/tv_pause_record"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -33,7 +33,7 @@
             android:textSize="15sp"/>
 
         <TextView
-            android:id="@+id/tv_resume_record"
+            android:id= "@id/tv_resume_record"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -44,7 +44,7 @@
             android:textSize="15sp"/>
 
         <TextView
-            android:id="@+id/tv_stop_record"
+            android:id= "@id/tv_stop_record"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"

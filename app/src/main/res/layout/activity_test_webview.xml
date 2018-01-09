@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.joker.ocean.webutil.TBSWebViewLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@id/tv_customview"
+    android:id= "@id/tv_customview"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <FrameLayout
-        android:id="@+id/fl_webview_content"
+        android:id= "@id/fl_webview_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
     </FrameLayout>
 </com.joker.ocean.webutil.TBSWebViewLayout>
     <!--<ListView-->
-    <!--android:id="@+id/lv_apks"-->
+    <!--android:id= "@id/lv_apks"-->
     <!--android:layout_width="match_parent"-->
     <!--android:layout_height="match_parent"-->
     <!--android:dividerHeight="1dp"-->

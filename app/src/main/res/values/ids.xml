@@ -1,4 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <item name="ocean_icon" type="id">false</item>
+    <item name="tv_app_name" type="id">false</item>
+    <item name="tv_app_pkg_name" type="id">false</item>
+    <item name="focus_ui" type="id">false</item>
+    <item name="tv_begin_play" type="id">false</item>
+    <item name="tv_stop_play" type="id">false</item>
+    <item name="iv_show" type="id">false</item>
+    <item name="sb_tone" type="id">false</item>
+    <item name="sb_saturation" type="id">false</item>
+    <item name="sb_bright" type="id">false</item>
+    <item name="tv_gray" type="id">false</item>
+    <item name="tv_reversal" type="id">false</item>
+    <item name="tv_Nostalgia" type="id">false</item>
+    <item name="tv_color" type="id">false</item>
+    <item name="tv_high_saturation" type="id">false</item>
+    <item name="tv_negative" type="id">false</item>
+    <item name="tv_old_pic" type="id">false</item>
+    <item name="tv_Nostalgia_effect" type="id">false</item>
+    <item name="tv_relief" type="id">false</item>
+    <item name="tv_translate" type="id">false</item>
+    <item name="tv_scale_big" type="id">false</item>
+    <item name="tv_scale_small" type="id">false</item>
+    <item name="tv_h_skew" type="id">false</item>
+    <item name="tv_v_skew" type="id">false</item>
+    <item name="photo" type="id">false</item>
+    <item name="title" type="id">false</item>
+    <item name="verticalSeekbar" type="id">false</item>
+    <item name="test" type="id">false</item>
+    <item name="tv_begin_record" type="id">false</item>
+    <item name="tv_pause_record" type="id">false</item>
+    <item name="tv_resume_record" type="id">false</item>
+    <item name="tv_stop_record" type="id">false</item>
+    <item name="button" type="id">false</item>
+    <item name="webView" type="id">false</item>
+    <item name="commentlistview" type="id">false</item>
+    <item name="lv_comment" type="id">false</item>
     <item name="tv_customview" type="id">false</item>
+    <item name="fl_webview_content" type="id">false</item>
+    <item name="lv_apks" type="id">false</item>
 </resources>

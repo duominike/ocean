@@ -4,7 +4,7 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
     <com.joker.multimedia.videorecorder.OceanGLSurfaceView
-        android:id="@id/tv_customview"
+        android:id= "@id/tv_customview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
 

@@ -5,7 +5,7 @@
               android:layout_height="wrap_content"
     xmlns:comment="http://schemas.android.com/apk/res-auto">
     <com.joker.sponge.customview.CommentListView
-        android:id="@+id/commentlistview"
+        android:id= "@id/commentlistview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         comment:character_color="@color/gray_285c95"
