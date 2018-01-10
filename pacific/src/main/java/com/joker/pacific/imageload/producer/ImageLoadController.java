@@ -2,13 +2,11 @@ package com.joker.pacific.imageload.producer;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.support.annotation.NonNull;
+import android.util.Log;
 
+import com.joker.pacific.imageload.ImageLoader;
 import com.joker.pacific.imageload.ImageLoaderConfig;
-
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadFactory;
+import com.joker.pacific.log.Logger;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
@@ -18,66 +16,48 @@ import io.reactivex.disposables.Disposable;
  */
 
 public class ImageLoadController {
-    private MemCacheProducer mMemCacheProducer;
-    private DiskCacheCacheProducer mDiskCacheCacheProducer;
-    private DecodeBitmapProducer mDecodeBitmapProducer;
-    private NetWorkProducer mNetWorkProducer;
-    private Executor executor;
     private Context mContext;
+    private Logger mLogger = Logger.getLogger(ImageLoadController.class);
+    private ImageProducerFactory producerFactory;
 
-    public ImageLoadController(Context context, ImageLoaderConfig loaderConfig){
+    public ImageLoadController(Context context, ImageLoaderConfig loaderConfig) {
+        producerFactory = new ImageProducerFactory(loaderConfig);
         this.mContext = context;
-        this.executor = loaderConfig.getExecutors();
-        if(executor == null){
-            executor = Executors.newFixedThreadPool(5, new ThreadFactory() {
-                @Override
-                public Thread newThread(@NonNull Runnable r) {
-                    return new Thread("ImageLoadThread");
-                }
-            });
-        }
-        mNetWorkProducer  = new NetWorkProducer(executor);
-        mDiskCacheCacheProducer = new DiskCacheCacheProducer(loaderConfig.getDiskCachePath(),
-                loaderConfig.getDiskCacheSize(), executor);
-        mDecodeBitmapProducer = new DecodeBitmapProducer(executor);
-        mMemCacheProducer = new MemCacheProducer(loaderConfig.getMemCacheSize(), executor);
-
-        mMemCacheProducer.setProducer(mDecodeBitmapProducer);
-        mDecodeBitmapProducer.setProducer(mDiskCacheCacheProducer);
-        mDiskCacheCacheProducer.setProducer(mNetWorkProducer);
-
     }
 
-    public void loadImage(final ImageRequest request){
-        if(request.url.startsWith("http:") || request.url.startsWith("https:")){
-            mMemCacheProducer.produce(request)
-            .subscribe(new Observer<Bitmap>() {
-                @Override
-                public void onSubscribe(@io.reactivex.annotations.NonNull Disposable d) {
-                    if(request != null && request.mImageListener != null){
-                        request.mImageListener.onPreLoad();
-                    }
-                }
+    public void loadImage(final ImageLoader.ImageRequest request) {
+        if (request.url.startsWith("http:") || request.url.startsWith("https:")) {
+            producerFactory.getProducerSequeue().produce(request)
+                    .subscribe(new Observer<Bitmap>() {
+                        @Override
+                        public void onSubscribe(@io.reactivex.annotations.NonNull Disposable d) {
+                            mLogger.info("onSubscribe");
+                            if (request != null && request.mImageListener != null) {
+                                request.mImageListener.onPreLoad();
+                            }
+                        }
 
-                @Override
-                public void onNext(@io.reactivex.annotations.NonNull Bitmap bitmap) {
-                    if(request != null && request.mImageListener != null){
-                        request.mImageListener.onLoadBitmap(bitmap);
-                    }
-                }
+                        @Override
+                        public void onNext(@io.reactivex.annotations.NonNull Bitmap bitmap) {
+                            mLogger.info("onNext:");
+                            if (request != null && request.mImageListener != null) {
+                                request.mImageListener.onLoadBitmap(bitmap);
+                            }
+                        }
 
-                @Override
-                public void onError(@io.reactivex.annotations.NonNull Throwable e) {
-                    if(request != null && request.mImageListener != null){
-                        request.mImageListener.onError();
-                    }
-                }
+                        @Override
+                        public void onError(@io.reactivex.annotations.NonNull Throwable e) {
+                            mLogger.error("onError: " + Log.getStackTraceString(e));
+                            if (request != null && request.mImageListener != null) {
+                                request.mImageListener.onError();
+                            }
+                        }
 
-                @Override
-                public void onComplete() {
-
-                }
-            });
+                        @Override
+                        public void onComplete() {
+                            mLogger.info("onComplete");
+                        }
+                    });
         }
     }
 

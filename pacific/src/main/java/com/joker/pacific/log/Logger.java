@@ -1,50 +1,57 @@
 package com.joker.pacific.log;
 
-import com.orhanobut.logger.AndroidLogAdapter;
-import com.orhanobut.logger.FormatStrategy;
-import com.orhanobut.logger.PrettyFormatStrategy;
+import android.util.Log;
 
 /**
  * Created by joker on 17-5-18.
  */
 
 public class Logger {
-    private com.orhanobut.logger.Logger mLogger;
     private String tag;
-    private Logger(String tag){
+
+    private Logger(String tag) {
         this.tag = tag;
     }
 
-    public static  Logger getLogger(Class logClass){
-        FormatStrategy formatStrategy = PrettyFormatStrategy.newBuilder()
-                .showThreadInfo(false)  // (Optional) Whether to show thread info or not. Default true
-//                .methodCount()         // (Optional) How many method line to show. Default 2
-                .methodOffset(7)        // (Optional) Hides internal method calls up to offset. Default 5
-//                .logStrategy(customLog) // (Optional) Changes the log strategy to print out. Default LogCat
-                .tag(logClass.getSimpleName())   // (Optional) Global tag for every log. Default PRETTY_LOGGER
-                .build();
-        com.orhanobut.logger.Logger.addLogAdapter(new AndroidLogAdapter(formatStrategy));
-        return new Logger(logClass.getSimpleName());
+    public static Logger getLogger(Class logClass) {
+       return new Logger(logClass.getSimpleName());
     }
 
-    public void info(String logInfo){
-        com.orhanobut.logger.Logger.i(logInfo);
+    public void info(String logInfo) {
+        Log.i(tag, logInfo);
     }
 
-    public void debug(String logInfo){
-        com.orhanobut.logger.Logger.d(logInfo);
+    public void debug(String logInfo) {
+        Log.d(tag,logInfo);
     }
 
-    public void error(String logInfo){
-        com.orhanobut.logger.Logger.e(logInfo);
+    public void error(String logInfo) {
+        Log.e(tag,logInfo);
     }
 
-    public void warn(String logInfo){
-        com.orhanobut.logger.Logger.w(tag, logInfo);
+    public void warn(String logInfo) {
+        Log.w(tag, logInfo);
     }
 
-    public void exception(Throwable e){
-        com.orhanobut.logger.Logger.e(e, "exception");
+    public void exception(Throwable e) {
+        Log.e(tag, Log.getStackTraceString(e));
     }
+
+    public void error(String format, Object... args) {
+        Log.e(tag, String.format(format, args));
+    }
+
+    public void info(String format, Object... args) {
+        Log.i(tag, String.format(format, args));
+    }
+
+    public void debug(String format, Object... args) {
+        Log.d(tag, String.format(format, args));
+    }
+
+    public void warn(String format, Object... args) {
+        Log.w(tag, String.format(format, args));
+    }
+
 
 }

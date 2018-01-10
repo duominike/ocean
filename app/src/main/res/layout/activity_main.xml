@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
+              xmlns:ocean="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
-    <ImageView
-        android:id= "@id/test"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <com.joker.ocean.selfview.AutoLoadImageView
+        android:id="@id/test"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:background="@drawable/luobin"
+        ocean:preLoadImage="@drawable/luobin"
         />
 </LinearLayout>
