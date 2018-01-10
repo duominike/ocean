@@ -64,7 +64,7 @@ public class AutoLoadImageView extends AppCompatImageView{
 
             @Override
             public void onError() {
-                if(mErrorDrawable != null){
+                if(mErrorDrawable != null && mErrorDrawable != null){
                     AutoLoadImageView.this.setImageDrawable(mErrorDrawable);
                 }
             }
