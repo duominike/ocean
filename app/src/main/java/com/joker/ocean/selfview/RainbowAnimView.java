@@ -47,17 +47,15 @@ public class RainbowAnimView extends View {
     private Bitmap mRainbowForDraw;
     private Paint mPaint;
     private static final  int  INVALIDATE = 100;
-    private int anim_frame_index = 0;
-    private static final int PER_FRAME_ROTATE_ANGLE = 24;
+    private static final int PER_FRAME_ROTATE_ANGLE = 30;
     private Handler mHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
             if(msg.what == INVALIDATE){
                 invalidate();
                 if(state == State.RELEASING_ANIM_ING){
-                    anim_frame_index++;
-                    rotateAngle = anim_frame_index * PER_FRAME_ROTATE_ANGLE % 360;
-                    mHandler.sendEmptyMessageDelayed(INVALIDATE, 16);
+                    rotateAngle = (rotateAngle - PER_FRAME_ROTATE_ANGLE) % 360;
+                    mHandler.sendEmptyMessageDelayed(INVALIDATE, 90);
                 }
             }
 
@@ -103,7 +101,6 @@ public class RainbowAnimView extends View {
 
 
     public void setState(int state) {
-        logger.info("left: %d; top: %d; mRanibowWidth: %d; mRainbowHeight: %d,", getLeft(), getTop(), getWidth(), getHeight());
         if (this.state == RELEASING_AFTER_ANIM && state == RELEASING_BEFORE_ANIM) {
             return;
         }
@@ -118,15 +115,15 @@ public class RainbowAnimView extends View {
     }
 
     public void startAnimation() {
+        invalidate();
         state = State.RELEASING_ANIM_ING;
-        anim_frame_index = 0;
-        anim_frame_index = (anim_frame_index * PER_FRAME_ROTATE_ANGLE) % 360;
+        rotateAngle = 360 - rotateAngle;
+        rotateAngle = (rotateAngle - PER_FRAME_ROTATE_ANGLE) % 360;
         mHandler.sendEmptyMessage(INVALIDATE);
     }
 
     public void endAnimation() {
         mHandler.removeMessages(INVALIDATE);
-        anim_frame_index = 0;
     }
 
     @Override

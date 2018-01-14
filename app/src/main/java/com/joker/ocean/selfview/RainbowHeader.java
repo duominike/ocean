@@ -46,7 +46,6 @@ public class RainbowHeader extends FrameLayout implements RefreshHeader {
         if(mRainbowAnimView == null){
            findRainbowAnimView();
         }
-        logger.info("mRainbowAnimView is Null ? -->>" + (mRainbowAnimView == null));
         if(mRainbowAnimView.getVisibility() != View.VISIBLE){
             mRainbowAnimView.setVisibility(View.VISIBLE);
         }
