@@ -23,7 +23,7 @@ public class MomentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             return new ViewHolder(View.inflate(mContext, R.layout.rainbow_header_layout, null));
         }else{
             return new ViewHolder(View.inflate(mContext,
-                    R.layout.rainbow_header_layout, null));
+                    R.layout.item_apk_detail, null));
         }
     }
 

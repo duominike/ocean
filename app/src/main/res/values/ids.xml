@@ -42,4 +42,5 @@
     <item name="smartRefreshLayout" type="id">false</item>
     <item name="header" type="id">false</item>
     <item name="recycleView" type="id">false</item>
+    <item name="rainbowView" type="id">false</item>
 </resources>

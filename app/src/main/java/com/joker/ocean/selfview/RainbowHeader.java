@@ -2,17 +2,14 @@ package com.joker.ocean.selfview;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-import com.joker.ocean.R;
 import com.joker.pacific.log.Logger;
 import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshKernel;
@@ -20,59 +17,74 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.constant.RefreshState;
 import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
 
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+
 /**
  * Created by joker on 18-1-14.
  */
 
 public class RainbowHeader extends FrameLayout implements RefreshHeader {
-    private Drawable mRaindow;
-    private Paint mPaint;
     private Logger logger = Logger.getLogger(RainbowHeader.class);
-    private int state = State.NONE;
-    private static final class State{
-        public static final int NONE = 0;
-        public static final int PULL_DOWN = 1;
-        public static final int RELEASSING_BEFORE_ANIM = 2;
-        public static final int RELEASSING_ANIM_ING = 3;
-        public static final int RELEASSING_AFTER_ANIM = 4;
-    }
+    private RainbowAnimView mRainbowAnimView;
     public RainbowHeader(Context context) {
         super(context);
-        init(context);
     }
 
     public RainbowHeader(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        init(context);
     }
 
     public RainbowHeader(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init(context);
     }
 
-    private void init(Context context){
-        mRaindow = context.getResources().getDrawable(R.drawable.rainbow_ic);
-        mPaint = new Paint();
-    }
 
     @Override
     public void onPullingDown(float percent, int offset, int headerHeight, int extendHeight) {
         logger.info("onPullingDown percent: %.2f; offset: %d; headerHeight: %d; extendHeight: %d",
                 percent, offset, headerHeight, extendHeight);
-        state = State.PULL_DOWN;
+        if(mRainbowAnimView == null){
+           findRainbowAnimView();
+        }
+        logger.info("mRainbowAnimView is Null ? -->>" + (mRainbowAnimView == null));
+        if(mRainbowAnimView.getVisibility() != View.VISIBLE){
+            mRainbowAnimView.setVisibility(View.VISIBLE);
+        }
+        mRainbowAnimView.setState(RainbowAnimView.State.PULL_DOWN);
+        mRainbowAnimView.refreshPosition(percent, offset);
+    }
+
+    private void findRainbowAnimView(){
+        ViewGroup parent = (ViewGroup) getParent();
+        mRainbowAnimView = null;
+        while (!(parent instanceof FrameLayout)){
+            parent = (ViewGroup)parent.getParent();
+        }
+
+        for(int i = parent.getChildCount() -1; i >= 0; i--){
+            if(parent.getChildAt(i) instanceof RainbowAnimView){
+                mRainbowAnimView = (RainbowAnimView)parent.getChildAt(i);
+                break;
+            }
+        }
     }
 
     @Override
     public void onReleasing(float percent, int offset, int headerHeight, int extendHeight) {
         logger.info("onReleasing percent: %.2f; offset: %d; headerHeight: %d; extendHeight: %d",
                 percent, offset, headerHeight, extendHeight);
+        mRainbowAnimView.setState(RainbowAnimView.State.RELEASING_BEFORE_ANIM);
+        mRainbowAnimView.refreshPosition(percent, offset);
+        if(offset == 0 && percent == 0.00f){
+            mRainbowAnimView.setState(RainbowAnimView.State.NONE);
+            mRainbowAnimView.setVisibility(View.GONE);
+        }
     }
 
     @Override
     public void onRefreshReleased(RefreshLayout layout, int headerHeight, int extendHeight) {
         logger.info("onRefreshReleased");
-
+        mRainbowAnimView.setState(RainbowAnimView.State.RELEASING_BEFORE_ANIM);
     }
 
     @NonNull
@@ -84,7 +96,7 @@ public class RainbowHeader extends FrameLayout implements RefreshHeader {
     @NonNull
     @Override
     public SpinnerStyle getSpinnerStyle() {
-        return SpinnerStyle.FixedFront;
+        return SpinnerStyle.Translate;
     }
 
     @Override
@@ -105,11 +117,16 @@ public class RainbowHeader extends FrameLayout implements RefreshHeader {
     @Override
     public void onStartAnimator(@NonNull RefreshLayout layout, int height, int extendHeight) {
         logger.info("onStartAnimator");
+        mRainbowAnimView.setState(RainbowAnimView.State.RELEASING_ANIM_ING);
+        mRainbowAnimView.startAnimation();
+
     }
 
     @Override
     public int onFinish(@NonNull RefreshLayout layout, boolean success) {
         logger.info("onFinish: " + success);
+        mRainbowAnimView.endAnimation();
+        mRainbowAnimView.setState(RainbowAnimView.State.RELEASING_AFTER_ANIM);
         return 0;
     }
 
@@ -126,5 +143,6 @@ public class RainbowHeader extends FrameLayout implements RefreshHeader {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+
     }
 }

@@ -14,4 +14,12 @@
         <attr name="preLoadImage" format="reference"/>
         <attr name="errorImage" format="reference"/>
     </declare-styleable>
+
+    <declare-styleable name="RainbowAnimView">
+        <attr name="rainbowWidth" format="dimension"/>
+        <attr name="rainbowHeight" format="dimension"/>
+        <attr name="rainbow" format="reference"/>
+        <attr name="rainbowLeftMargin" format="dimension"/>
+
+    </declare-styleable>
 </resources>
