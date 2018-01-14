@@ -39,4 +39,7 @@
     <item name="tv_customview" type="id">false</item>
     <item name="fl_webview_content" type="id">false</item>
     <item name="lv_apks" type="id">false</item>
+    <item name="smartRefreshLayout" type="id">false</item>
+    <item name="header" type="id">false</item>
+    <item name="recycleView" type="id">false</item>
 </resources>

@@ -7,4 +7,5 @@
     <color name="black">#000000</color>
     <color name="blue_edge">#4bbfde</color>
     <color name="theme_color">#ff39d7ba</color>
+    <color name="gray_e2e2e2">#ffe2e2e2</color>
 </resources>

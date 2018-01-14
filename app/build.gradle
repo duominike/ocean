@@ -15,7 +15,7 @@ android {
             enabled true
         }
         ndk {
-            abiFilters "armeabi-v7a"
+            abiFilters "armeabi-v7a",'x86', 'x86_64'
         }
     }
     buildTypes {
@@ -38,6 +38,7 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:25.0.0'
+    compile 'com.android.support:design:25.0.0'
     compile 'com.facebook.fresco:animated-gif:0.12.0'
     compile 'com.facebook.fresco:animated-webp:0.12.0'
     compile 'com.facebook.fresco:webpsupport:0.12.0'
@@ -49,5 +50,5 @@ dependencies {
     debugCompile project(path: ':multimedia', configuration: "debug")
     releaseCompile project(path: ':multimedia', configuration: "release")
 //    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3'
-
+    compile 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.4-6'
 }
