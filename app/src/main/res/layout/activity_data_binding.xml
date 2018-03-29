@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+   >
+
+    <data>
+        <import type="java.util.List"/>
+        <variable
+            name="app"
+            type="com.joker.ocean.testview.testmodel.App" />
+        <variable
+            name="handlers"
+            type="com.joker.ocean.testview.testmodel.OceanHandlers" />
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/blue_edge"
+            android:gravity="center"
+            android:onClick="@{handlers::onClickTitle}"
+            android:text="@{app.name}" />
+        <!--/>-->
+
+        <android.support.v7.widget.RecyclerView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@id/recycleView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </android.support.v7.widget.RecyclerView>
+    </LinearLayout>
+</layout>

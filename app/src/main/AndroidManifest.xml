@@ -45,6 +45,12 @@
         <activity android:name=".testview.TestVerticalSeekbarActiivty">
 
         </activity>
+        <activity android:name=".testview.TestDataBindingActivity">
+
+        </activity>
+        <activity android:name=".testview.TestSmartRefreshActivity">
+
+        </activity>
         <activity android:name=".testview.TempActivity">
 
         </activity>

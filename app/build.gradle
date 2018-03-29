@@ -10,7 +10,7 @@ android {
         targetSdkVersion 24
         versionCode 1
         versionName "1.0"
-        multiDexEnabled true;
+        multiDexEnabled true
         jackOptions {
             enabled true
         }
@@ -32,6 +32,9 @@ android {
     compileOptions {
         targetCompatibility 1.8
         sourceCompatibility 1.8
+    }
+    dataBinding{
+        enabled = true
     }
 }
 
